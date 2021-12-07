@@ -1,3 +1,5 @@
+package forms
+
 type ServiceRequestForm struct {
 	RequesterSystem    RequesterSystem      `json:"requesterSystem"`
 	RequestedService   RequestedService     `json:"requestedService"`

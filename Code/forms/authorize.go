@@ -1,8 +1,10 @@
+package forms
+
 /********************************* Authorize ******************************************/
 
 type Authorize struct {
-	IntraCloudRule IntraCloudRule
-	IntraCloudRule IntraCloudRule
+	IntraCloudRule   IntraCloudRule
+	IntraCloudResult IntraCloudResult
 }
 
 /********************************* IntraCloudRule ******************************************/
