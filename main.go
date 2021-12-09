@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	o.Test()
+	o.TestMH()
 }
