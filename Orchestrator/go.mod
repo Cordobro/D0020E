@@ -1,3 +1,3 @@
-module Orchestrator
+module orchestrator
 
 go 1.17

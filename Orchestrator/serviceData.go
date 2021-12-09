@@ -1,6 +1,6 @@
-package Orchestrator
+package orchestrator
 import (
-	forms "Orchestrator/forms"
+	forms "orchestrator/forms"
 )
 
 
