@@ -1,15 +1,19 @@
-package orchestrator
+package Orchestrator
 
 import (
 	"encoding/json"
 	"fmt"
-	forms "orchestrator/forms"
+	forms "arrowhead/Orchestrator/forms"
 )
 
-func test() {
+func Test() {
+	/*
 	var serviceRequestForm forms.ServiceRequestForm
 
 	serviceRequestForm.RequesterSystem.SystemName = "Jacks dator"
+	fmt.Println(serviceRequestForm.RequesterSystem.SystemName)
+	*/
+	println("hello")
 }
 
 func constructMessage() {
