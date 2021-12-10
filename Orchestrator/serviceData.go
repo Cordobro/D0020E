@@ -2,6 +2,7 @@ package Orchestrator
 
 import (
 	forms "arrowhead/Orchestrator/forms"
+	"encoding/json"
 	"fmt"
 )
 
@@ -13,42 +14,29 @@ type serviceData struct {
 	intraCloudRule        forms.IntraCloudRule
 }
 
+func NewServiceData(request forms.ServiceRequestForm) *serviceData {
+
+	s := serviceData{}
+	s.serviceRequestForm = request
+
+	return &s
+}
+
 func TestMH() {
 
 	var serviceRequestForm forms.ServiceRequestForm
 
 	serviceRequestForm.RequesterSystem.SystemName = "Jacks dator"
-	fmt.Println(serviceRequestForm.RequesterSystem.SystemName)
 
-}
+	test, _ := json.Marshal(serviceRequestForm)
 
-func constructMessage(messageType string, serviceData serviceData) {
-
-	switch messageType {
-
-	case "serviceQueryForm":
-
-		constructServiceQueryForm(serviceData)
-
-	case "intraCloudRule":
-
-		constructIntraCloudRule(serviceData)
-
-	case "orchestrationResponse":
-
-		orchestrationResponse := new(forms.OrchestrationResponse)
-
-		serviceData.orchestrationResponse = *orchestrationResponse
-
-	default:
-
-	}
+	ParseMessage(test)
 
 }
 
 /********************************************************************************** ServiceQueryForm ******************************************************************************/
 
-func constructServiceQueryForm(serviceData serviceData) {
+func ConstructServiceQueryForm(serviceData serviceData) {
 
 	var requestedService = serviceData.serviceRequestForm.RequestedService
 
@@ -85,13 +73,11 @@ func constructServiceQueryForm(serviceData serviceData) {
 /********************************************************************************** IntraCloudRule ******************************************************************************/
 
 //might not work
-func constructIntraCloudRule(serviceData serviceData) []forms.IntraCloudRule {
-
-	var intraCloudRuleList []forms.IntraCloudRule
+func ConstructIntraCloudRule(serviceData serviceData) {
 
 	var requesterSystem = serviceData.serviceRequestForm.RequesterSystem
 
-	intraCloudRule := new(forms.IntraCloudRule)
+	var intraCloudRule forms.IntraCloudRule
 
 	/***Consumer***/
 
@@ -123,6 +109,7 @@ func constructIntraCloudRule(serviceData serviceData) []forms.IntraCloudRule {
 
 		for j := 0; j < interfaceLength; j++ {
 			var interfaceID = serviceData.discover.ServiceQueryList.ServiceQueryData[i].Interfaces[j].ID
+
 			interfaceIDList = append(interfaceIDList, interfaceID)
 		}
 
@@ -131,23 +118,83 @@ func constructIntraCloudRule(serviceData serviceData) []forms.IntraCloudRule {
 
 		//ServiceDefinitionID
 		intraCloudRule.ServiceDefinitionID = serviceData.discover.ServiceQueryList.ServiceQueryData[i].ID
-
-		//add to main list
-		intraCloudRuleList = append(intraCloudRuleList, *intraCloudRule)
 	}
 
-	return intraCloudRuleList
+	serviceData.intraCloudRule = intraCloudRule
 }
 
 /********************************************************************************** OrchestrationResponse ******************************************************************************/
 
-func constructOrchestrationResponse(serviceData serviceData) {
+func ConstructOrchestrationResponse(serviceData serviceData, serviceQueryList forms.ServiceQueryList) {
+
+	var serviceQueryData = serviceQueryList.ServiceQueryData[0]
+
+	var response = serviceData.orchestrationResponse.Response[0]
+
+	var provider = response.Provider
+	var service = response.Service
+	var metadata = response.Metadata
+	//var authorizationTokens = response.AuthorizationTokens
+
+	//Provider
+	provider.ID = serviceQueryData.Provider.ID
+	provider.SystemName = serviceQueryData.Provider.SystemName
+	provider.Address = serviceQueryData.Provider.Address
+	provider.Port = serviceQueryData.Provider.Port
+	provider.AuthenticationInfo = serviceQueryData.Provider.AuthenticationInfo
+	provider.CreatedAt = serviceQueryData.Provider.CreatedAt
+	provider.UpdatedAt = serviceQueryData.Provider.UpdatedAt
+
+	//Service
+	service.ID = serviceQueryData.ServiceDefinition.ID
+	service.ServiceDefinition = serviceQueryData.ServiceDefinition.ServiceDefinition
+	service.CreatedAt = serviceQueryData.ServiceDefinition.CreatedAt
+	service.UpdatedAt = serviceQueryData.ServiceDefinition.UpdatedAt
+
+	//serviceURI
+	response.ServiceURI = serviceQueryData.ServiceURI
+
+	//secure
+	response.Secure = serviceQueryData.Secure
+
+	//metadata
+	metadata.AdditionalProp1 = serviceQueryData.Metadata.AdditionalProp1
+	metadata.AdditionalProp2 = serviceQueryData.Metadata.AdditionalProp2
+	metadata.AdditionalProp3 = serviceQueryData.Metadata.AdditionalProp3
+
+	//interfaces
+	for i := 0; i < len(serviceQueryData.Interfaces); i++ {
+		response.Interfaces[i].ID = serviceQueryData.Interfaces[i].ID
+		response.Interfaces[i].InterfaceName = serviceQueryData.Interfaces[i].InterfaceName
+		response.Interfaces[i].CreatedAt = serviceQueryData.Interfaces[i].CreatedAt
+		response.Interfaces[i].UpdatedAt = serviceQueryData.Interfaces[i].UpdatedAt
+	}
+
+	//version
+	response.Version = serviceQueryData.Version
+
+	//autorizationTokens
+
+	//warnings
+
+	/********************* OBS!! DONT HAVE YET **************************/
+
+	serviceData.orchestrationResponse.Response[0] = response
 
 }
 
-func parseMessage(messageType string, serviceData serviceData, byteValue []byte) {
+func ParseMessage(byteValue []byte) {
 
-	//res, _ := json.Unmarshal([]byte(byteValue), &serviceData.serviceRequestForm)
+	//var dat map[string]interface{}
 
-	//fmt.Println(string(res))
+	var requestForm forms.ServiceRequestForm
+
+	var _ = json.Unmarshal(byteValue, &requestForm)
+
+	fmt.Println("___INSIDE ParseMessage___")
+	fmt.Println(requestForm)
+}
+
+func ComposeMessage() {
+
 }
