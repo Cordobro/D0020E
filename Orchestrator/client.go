@@ -14,7 +14,7 @@ type client struct {
 
 
 //Init Client
-func newClient(httpAdrs string) *client {
+func NewClient(httpAdrs string) *client {
 	c := client{httpAdrs: httpAdrs}
 	return &c
 }
@@ -22,7 +22,7 @@ func newClient(httpAdrs string) *client {
 //	SendJson()
 //	Sends Json file to target http server
 //	returns server response as json
-func SendJson(c client, jsonStr []byte) []byte{
+func ExchangeJson(c client, jsonStr []byte) []byte{
 
 	resp, err := http.Post(c.httpAdrs, "application/json", bytes.NewBuffer(jsonStr))
 	

@@ -7,13 +7,21 @@ import (
 	"strconv"
 )
 
+type server struct{	
+    CONN_PORT string
+}
+
+func NewServer(CONN_PORT string) *server{
+	s := server{CONN_PORT: CONN_PORT}
+	return &s
+}
+
 const (
     CONN_HOST = "localhost"
-    CONN_PORT = "3333"
     CONN_TYPE = "tcp"
 )
 
-func Listen() {
+func Listen(s server) {
 
     // Listen for incoming connections.
     l, err := net.Listen(CONN_TYPE, CONN_HOST+":"+CONN_PORT)
@@ -50,13 +58,14 @@ func handleRequest(conn net.Conn) {
 	data := []byte(strconv.Itoa(reqLen))
 
 	Spawn(conn, data)
-  // Close the connection when you're done with it.
-	conn.Close()
+  
 }
 
 func Respond(conn net.Conn, data []byte){
-  // Send a response back to person contacting us.
-	conn.Write([]byte(Orchestration Response))
+    // Send a response back to person contacting us.
+	conn.Write(data)
+	// Close the connection when you're done with it.
+	conn.Close()
 }
 
 
