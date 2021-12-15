@@ -12,6 +12,8 @@ type serviceData struct {
 	discover              forms.Discover
 	intraCloudResult      forms.IntraCloudResult
 	intraCloudRule        forms.IntraCloudRule
+	tokenRule             forms.TokenRule
+	tokenResult           forms.TokenData
 }
 
 func NewServiceData(request forms.ServiceRequestForm) *serviceData {
@@ -121,6 +123,41 @@ func ConstructIntraCloudRule(serviceData serviceData) {
 	}
 
 	serviceData.intraCloudRule = intraCloudRule
+}
+
+/********************************************************************************** TokenRule ******************************************************************************/
+
+func ConstructTokenRule(serviceData serviceData) {
+
+	tokenRule := new(forms.TokenRule)
+
+	//Consumer
+	tokenRule.Consumer.Address = serviceData.serviceRequestForm.RequesterSystem.Address
+	tokenRule.Consumer.AuthenticationInfo = serviceData.serviceRequestForm.RequesterSystem.AuthenticationInfo
+	tokenRule.Consumer.Port = serviceData.serviceRequestForm.RequesterSystem.Port
+	tokenRule.Consumer.SystemName = serviceData.serviceRequestForm.RequesterSystem.SystemName
+
+	//ConsumerCloud
+	//Where do we get these?
+	/*
+		tokenRule.ConsumerCloud.AuthenticationInfo =
+		tokenRule.ConsumerCloud.GatekeeperRelayIds =
+		tokenRule.ConsumerCloud.GatewayRelayIds =
+		tokenRule.ConsumerCloud.Name =
+		tokenRule.ConsumerCloud.Neighbor =
+		tokenRule.ConsumerCloud.Operator =
+		tokenRule.ConsumerCloud.Secure =
+	*/
+
+	//Duration
+	//tokenRule.Duration =
+
+	//Providers
+	//provider
+
+	//Service
+	//tokenRule.Service
+
 }
 
 /********************************************************************************** OrchestrationResponse ******************************************************************************/
