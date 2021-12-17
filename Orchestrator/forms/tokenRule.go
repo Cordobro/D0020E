@@ -32,3 +32,37 @@ type Providers struct {
 	Provider          Provider `json:"provider"`
 	ServiceInterfaces []string `json:"serviceInterfaces"`
 }
+
+func ConstructTokenRule(srf *ServiceRequestForm) *TokenRule {
+
+	var tokenRule TokenRule
+
+	//Consumer
+	tokenRule.Consumer.Address = srf.RequesterSystem.Address
+	tokenRule.Consumer.AuthenticationInfo = srf.RequesterSystem.AuthenticationInfo
+	tokenRule.Consumer.Port = srf.RequesterSystem.Port
+	tokenRule.Consumer.SystemName = srf.RequesterSystem.SystemName
+
+	//ConsumerCloud
+	//Where do we get these?
+	/*
+		tokenRule.ConsumerCloud.AuthenticationInfo =
+		tokenRule.ConsumerCloud.GatekeeperRelayIds =
+		tokenRule.ConsumerCloud.GatewayRelayIds =
+		tokenRule.ConsumerCloud.Name =
+		tokenRule.ConsumerCloud.Neighbor =
+		tokenRule.ConsumerCloud.Operator =
+		tokenRule.ConsumerCloud.Secure =
+	*/
+
+	//Duration
+	//tokenRule.Duration =
+
+	//Providers
+	//provider
+
+	//Service
+	//tokenRule.Service
+
+	return &tokenRule
+}

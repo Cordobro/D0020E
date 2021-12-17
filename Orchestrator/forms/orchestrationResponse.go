@@ -38,3 +38,65 @@ type OrchestrationResponse struct {
 		Warnings []string `json:"warnings"`
 	} `json:"response"`
 }
+
+//This is assuming we have already run the matchmaker and will only return one service to the consumer (the best one)
+
+func ConstructOrchestrationResponse(sql *ServiceQueryList) *OrchestrationResponse {
+
+	var oResponse OrchestrationResponse
+
+	var serviceQueryData = sql.ServiceQueryData[0]
+	var response = oResponse.Response[0]
+
+	var provider = response.Provider
+	var service = response.Service
+	var metadata = response.Metadata
+
+	//Provider
+	provider.ID = serviceQueryData.Provider.ID
+	provider.SystemName = serviceQueryData.Provider.SystemName
+	provider.Address = serviceQueryData.Provider.Address
+	provider.Port = serviceQueryData.Provider.Port
+	provider.AuthenticationInfo = serviceQueryData.Provider.AuthenticationInfo
+	provider.CreatedAt = serviceQueryData.Provider.CreatedAt
+	provider.UpdatedAt = serviceQueryData.Provider.UpdatedAt
+
+	//Service
+	service.ID = serviceQueryData.ServiceDefinition.ID
+	service.ServiceDefinition = serviceQueryData.ServiceDefinition.ServiceDefinition
+	service.CreatedAt = serviceQueryData.ServiceDefinition.CreatedAt
+	service.UpdatedAt = serviceQueryData.ServiceDefinition.UpdatedAt
+
+	//serviceURI
+	response.ServiceURI = serviceQueryData.ServiceURI
+
+	//secure
+	response.Secure = serviceQueryData.Secure
+
+	//metadata
+	metadata.AdditionalProp1 = serviceQueryData.Metadata.AdditionalProp1
+	metadata.AdditionalProp2 = serviceQueryData.Metadata.AdditionalProp2
+	metadata.AdditionalProp3 = serviceQueryData.Metadata.AdditionalProp3
+
+	//interfaces
+	for i := 0; i < len(serviceQueryData.Interfaces); i++ {
+		response.Interfaces[i].ID = serviceQueryData.Interfaces[i].ID
+		response.Interfaces[i].InterfaceName = serviceQueryData.Interfaces[i].InterfaceName
+		response.Interfaces[i].CreatedAt = serviceQueryData.Interfaces[i].CreatedAt
+		response.Interfaces[i].UpdatedAt = serviceQueryData.Interfaces[i].UpdatedAt
+	}
+
+	//version
+	response.Version = serviceQueryData.Version
+
+	//autorizationTokens
+
+	//warnings
+
+	/********************* OBS!! DONT HAVE YET **************************/
+
+	oResponse.Response[0] = response
+
+	return &oResponse
+
+}
