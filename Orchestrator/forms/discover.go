@@ -1,5 +1,7 @@
 package forms
 
+import "fmt"
+
 type Discover struct {
 	ServiceQueryForm ServiceQueryForm
 	ServiceQueryList ServiceQueryList
@@ -59,3 +61,37 @@ type ServiceQueryList struct {
 	UnfilteredHits int `json:"unfilteredHits"`
 }
 
+func ConstructServiceQueryForm(srf *ServiceRequestForm) *ServiceQueryForm {
+
+	var requestedService = srf.RequestedService
+
+	var serviceQueryForm ServiceQueryForm
+
+	//ServiceDefinitionRequirement
+	serviceQueryForm.ServiceDefinitionRequirement = requestedService.ServiceDefinitionRequirement
+
+	fmt.Println(serviceQueryForm.ServiceDefinitionRequirement)
+
+	//InterfaceRequirements
+	serviceQueryForm.InterfaceRequirements = requestedService.InterfaceRequirements
+
+	//SecurityRequirements
+	serviceQueryForm.SecurityRequirements = requestedService.SecurityRequirements
+
+	//MetadataRequirements
+	serviceQueryForm.MetadataRequirements = requestedService.MetadataRequirements
+
+	//VersionRequirement
+	serviceQueryForm.VersionRequirement = requestedService.VersionRequirement
+
+	//MaxVersionRequirement
+	serviceQueryForm.MaxVersionRequirement = requestedService.MaxVersionRequirement
+
+	//MinVersionRequirement
+	serviceQueryForm.MinVersionRequirement = requestedService.MinVersionRequirement
+
+	//PingProviders
+	serviceQueryForm.PingProviders = true
+
+	return &serviceQueryForm
+}

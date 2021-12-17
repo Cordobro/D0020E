@@ -2,32 +2,24 @@ package Orchestrator
 
 import "net"
 
-
-type request struct{
-	data serviceData
+type request struct {
+	data ServiceData
 	conn net.Conn
 
 	serviceRegAdrs string
-	authAdrs string
-
+	authAdrs       string
 }
 
-func NewRequest(data serviceData, conn net.Conn, serviceRegAdrs string, authAdrs string) *request {
-	r := request{data: data, 
-				 conn: conn, 
-				 serviceRegAdrs: serviceRegAdrs, 
-				 authAdrs: authAdrs}
+func NewRequest(data ServiceData, conn net.Conn, serviceRegAdrs string, authAdrs string) *request {
+	r := request{data: data,
+		conn:           conn,
+		serviceRegAdrs: serviceRegAdrs,
+		authAdrs:       authAdrs}
 	return &r
 }
 
-func DoRequest(){
+func DoRequest() {
 
 }
 
-func Matchmaker(){}
-
-
-
-
-
-
+func Matchmaker() {}
