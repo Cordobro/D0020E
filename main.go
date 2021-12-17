@@ -18,18 +18,32 @@ func testServiceData() {
 	r1 := new(forms.ServiceRequestForm)
 	r1.RequestedService.ServiceDefinitionRequirement = "GE MIG TEMP"
 
-	r2 := new(forms.ServiceRequestForm)
-	r2.RequestedService.ServiceDefinitionRequirement = "GE MIG TID"
-
 	//New serviceData is created for each request
 	s1 := o.NewServiceData(r1)
-	s2 := o.NewServiceData(r2)
 
 	//Form the request a queryForm is constructed
-	forms.ConstructServiceQueryForm(&s1.ServiceRequestForm)
-	fmt.Println("S1: " + s1.ServiceRequestForm.RequestedService.ServiceDefinitionRequirement)
+	s1.Discover.ServiceQueryForm = forms.ConstructServiceQueryForm(&s1.ServiceRequestForm)
+	fmt.Println("S1")
+	fmt.Println(s1.Discover.ServiceQueryForm)
+	fmt.Println("")
 
-	forms.ConstructServiceQueryForm(&s2.ServiceRequestForm)
-	fmt.Println("S2: " + s2.ServiceRequestForm.RequestedService.ServiceDefinitionRequirement)
+	//marshal the form
+	o.ComposeServiceQueryForm(s1.Discover.ServiceQueryForm)
+
+	//pretend to send query
+
+	//get result back
+
+	//construct intraCloudRule
+
+	//get result
+
+	//construct tokenRule
+
+	//get result
+
+	//matchmake
+
+	//construct orchestrationResponse
 
 }

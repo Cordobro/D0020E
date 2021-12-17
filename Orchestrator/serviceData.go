@@ -11,12 +11,17 @@ type ServiceData struct {
 	OrchestrationResponse forms.OrchestrationResponse
 	Discover              forms.Discover
 	IntraCloudResult      forms.IntraCloudResult
-	IntraCloudRule        forms.IntraCloudRule
-	TokenRule             forms.TokenRule
+	IntraCloudRule        *forms.IntraCloudRule
+	TokenRule             *forms.TokenRule
 	TokenResult           forms.TokenData
 }
 
 func NewServiceData(request *forms.ServiceRequestForm) *ServiceData {
+
+	fmt.Println("---Inside NewServiceData---")
+	fmt.Println("")
+	fmt.Println(request)
+	fmt.Println("")
 
 	s := new(ServiceData)
 	s.ServiceRequestForm = *request
@@ -24,8 +29,16 @@ func NewServiceData(request *forms.ServiceRequestForm) *ServiceData {
 	return s
 }
 
-func ComposeMessage() {
+func ComposeServiceQueryForm(sql *forms.ServiceQueryForm) []byte {
 
+	msg, _ := json.Marshal(sql)
+
+	fmt.Println("---Inside ComposeServiceQueryForm---")
+	fmt.Println("")
+	fmt.Println(string(msg))
+	fmt.Println("")
+
+	return msg
 }
 
 func ParseMessage(byteValue []byte) {

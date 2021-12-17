@@ -3,8 +3,8 @@ package forms
 import "fmt"
 
 type Discover struct {
-	ServiceQueryForm ServiceQueryForm
-	ServiceQueryList ServiceQueryList
+	ServiceQueryForm *ServiceQueryForm
+	ServiceQueryList *ServiceQueryList
 }
 
 type ServiceQueryForm struct {
@@ -70,8 +70,6 @@ func ConstructServiceQueryForm(srf *ServiceRequestForm) *ServiceQueryForm {
 	//ServiceDefinitionRequirement
 	serviceQueryForm.ServiceDefinitionRequirement = requestedService.ServiceDefinitionRequirement
 
-	fmt.Println(serviceQueryForm.ServiceDefinitionRequirement)
-
 	//InterfaceRequirements
 	serviceQueryForm.InterfaceRequirements = requestedService.InterfaceRequirements
 
@@ -92,6 +90,11 @@ func ConstructServiceQueryForm(srf *ServiceRequestForm) *ServiceQueryForm {
 
 	//PingProviders
 	serviceQueryForm.PingProviders = true
+
+	fmt.Println("---Inside ConstructServiceQueryForm---")
+	fmt.Println("")
+	fmt.Println(serviceQueryForm)
+	fmt.Println("")
 
 	return &serviceQueryForm
 }
