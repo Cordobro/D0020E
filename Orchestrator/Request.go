@@ -3,7 +3,7 @@ package Orchestrator
 import forms "arrowhead/Orchestrator/forms"
 
 type request struct {
-	data ServiceData
+	data           ServiceData
 	serviceRegAdrs string
 	authAdrs       string
 }
@@ -15,18 +15,22 @@ func NewRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *reque
 	return &r
 }
 
-func sendServiceRequest(r *request) *forms.IntraCloudRule{
-	serviceRegClient := NewClient(r.serviceRegAdrs)
-	serviceQueryList:= ExchangeJson(*serviceRegClient, r.data.ServiceRequestForm)
-	return forms.ConstructIntraCloudRule(&r.data.ServiceRequestForm, serviceQueryList.(forms.ServiceQueryList))
+func sendServiceRequest(r *request) *forms.IntraCloudRule {
+	/*
+		serviceRegClient := NewClient(r.serviceRegAdrs)
+		serviceQueryList := ExchangeJson(*serviceRegClient, r.data.Discover.ServiceQueryForm)
+	*/
+
+	//Ger error need fix
+	//r.data.Discover.ServiceQueryList = &serviceQueryList.(*forms.ServiceQueryList)
+
+	return forms.ConstructIntraCloudRule(&r.data.ServiceRequestForm, &r.data.Discover)
 }
 
-func sendAuthQuery(r *request) *forms.InterCloudResult{
+func sendAuthQuery(r *request) *forms.InterCloudResult {
 	authClient := NewClient(r.authAdrs)
 	intraCloudResult := ExchangeJson(*authClient, r.data.ServiceRequestForm)
 	return intraCloudResult.(*forms.InterCloudResult)
 }
-
-
 
 //func Matchmaker(r *request) {}
