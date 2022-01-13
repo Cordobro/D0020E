@@ -14,9 +14,14 @@ const (
 
 
 
-func Spawn(conn net.Conn, data []byte){
+func Spawn(conn net.Conn, data interface{}){
+	
+	serviceData := NewServiceData(data)
+	r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
+	//Checks what services
+	intraCloudRule := sendServiceRequest(r)
 
-	/*
-	r = NewRequest(data, conn, SERVICE_ADDRESS, AUTH_ADDRESS)
-	DoRequest()*/
+	//Checks if requestor has authentication
+	
+
 }

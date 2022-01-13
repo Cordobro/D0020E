@@ -3,8 +3,8 @@ package Orchestrator
 import (
 	"fmt"
 	"net"
-	"os"
 	"strconv"
+    "encoding/json"
 )
 
 type server struct{	
@@ -25,10 +25,7 @@ func Listen(s server) {
 
     // Listen for incoming connections.
     l, err := net.Listen(CONN_TYPE, CONN_HOST+":"+CONN_PORT)
-    if err != nil {
-        fmt.Println("Error listening:", err.Error())
-        os.Exit(1)
-    }
+    errorHandler(err)
 
     // Close the listener when the application closes.
     defer l.Close()
@@ -36,10 +33,7 @@ func Listen(s server) {
     for {
         // Listen for an incoming connection.
         conn, err := l.Accept()
-        if err != nil {
-            fmt.Println("Error accepting: ", err.Error())
-            os.Exit(1)
-        }
+        errorHandler(err)
         // Handle connections in a new goroutine.
         go handleRequest(conn)
     }
@@ -51,22 +45,28 @@ func handleRequest(conn net.Conn) {
 	buf := make([]byte, 1024)
   // Read the incoming connection into the buffer.
 	reqLen, err := conn.Read(buf)
-	if err != nil {
-    fmt.Println("Error reading:", err.Error())
-	}
+	errorHandler(err)
 
 	data := []byte(strconv.Itoa(reqLen))
 
-	Spawn(conn, data)
+    var serviceRequestForm interface{}
+    unmarshalErr := json.Unmarshal(data, serviceRequestForm)
+    errorHandler(unmarshalErr)
+	Spawn(conn, serviceRequestForm)
   
 }
 
-func Respond(conn net.Conn, data []byte){
+func Respond(conn net.Conn, responseStruct net.Interface){
+    jsonData, err := json.Marshal(responseStruct)
+    errorHandler(err)
+
     // Send a response back to person contacting us.
-	conn.Write(data)
+	conn.Write(jsonData)
 	// Close the connection when you're done with it.
 	conn.Close()
 }
+
+
 
 
 //https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go

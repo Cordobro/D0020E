@@ -1,25 +1,32 @@
 package Orchestrator
 
-import "net"
+import forms "arrowhead/Orchestrator/forms"
 
 type request struct {
 	data ServiceData
-	conn net.Conn
-
 	serviceRegAdrs string
 	authAdrs       string
 }
 
-func NewRequest(data ServiceData, conn net.Conn, serviceRegAdrs string, authAdrs string) *request {
+func NewRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *request {
 	r := request{data: data,
-		conn:           conn,
 		serviceRegAdrs: serviceRegAdrs,
 		authAdrs:       authAdrs}
 	return &r
 }
 
-func DoRequest() {
-
+func sendServiceRequest(r *request) *forms.IntraCloudRule{
+	serviceRegClient := NewClient(r.serviceRegAdrs)
+	serviceQueryList:= ExchangeJson(*serviceRegClient, r.data.ServiceRequestForm)
+	return forms.ConstructIntraCloudRule(&r.data.ServiceRequestForm, serviceQueryList.(forms.ServiceQueryList))
 }
 
-func Matchmaker() {}
+func sendAuthQuery(r *request) *forms.InterCloudResult{
+	authClient := NewClient(r.authAdrs)
+	intraCloudResult := ExchangeJson(*authClient, r.data.ServiceRequestForm)
+	return intraCloudResult.(*forms.InterCloudResult)
+}
+
+
+
+//func Matchmaker(r *request) {}
