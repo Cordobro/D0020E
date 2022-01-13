@@ -58,7 +58,7 @@ func handleRequest(conn net.Conn) {
 	data := []byte(strconv.Itoa(reqLen))
 
 	Spawn(conn, data)
-  
+
 }
 
 func Respond(conn net.Conn, data []byte){
