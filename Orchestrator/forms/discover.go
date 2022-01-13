@@ -63,11 +63,9 @@ type ServiceQueryList struct {
 	UnfilteredHits int `json:"unfilteredHits"`
 }
 
-func ConstructServiceQueryForm(srf *ServiceRequestForm) *ServiceQueryForm {
+func ConstructServiceQueryForm(srf *ServiceRequestForm, serviceQueryForm *ServiceQueryForm){
 
 	var requestedService = srf.RequestedService
-
-	var serviceQueryForm ServiceQueryForm
 
 	//ServiceDefinitionRequirement
 	serviceQueryForm.ServiceDefinitionRequirement = requestedService.ServiceDefinitionRequirement
@@ -98,5 +96,4 @@ func ConstructServiceQueryForm(srf *ServiceRequestForm) *ServiceQueryForm {
 	fmt.Println(serviceQueryForm)
 	fmt.Println("")
 
-	return &serviceQueryForm
 }

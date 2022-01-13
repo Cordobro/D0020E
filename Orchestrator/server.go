@@ -21,10 +21,10 @@ const (
     CONN_TYPE = "tcp"
 )
 
-func Listen(s server) {
+func Listen(s *server) {
 
     // Listen for incoming connections.
-    l, err := net.Listen(CONN_TYPE, CONN_HOST+":"+CONN_PORT)
+    l, err := net.Listen(CONN_TYPE, CONN_HOST+":"+s.CONN_PORT)
     errorHandler(err)
 
     // Close the listener when the application closes.
@@ -56,7 +56,7 @@ func handleRequest(conn net.Conn) {
   
 }
 
-func Respond(conn net.Conn, responseStruct net.Interface){
+func Respond(conn net.Conn, responseStruct interface{}){
     jsonData, err := json.Marshal(responseStruct)
     errorHandler(err)
 

@@ -16,41 +16,16 @@ type ServiceData struct {
 	TokenResult           forms.TokenData
 }
 
-func NewServiceData(byteValue []byte) *ServiceData {
+func NewServiceData(serviceRequest interface{}) *ServiceData {
 
-	var request forms.ServiceRequestForm
-	var _ = json.Unmarshal(byteValue, &request)
-
-	fmt.Println("---Inside NewServiceData---")
-	fmt.Println("")
-	fmt.Println(request)
-	fmt.Println("")
-
-	s := new(ServiceData)
-	s.ServiceRequestForm = request
-
+	s := &ServiceData{ServiceRequestForm: serviceRequest.(forms.ServiceRequestForm)}
+	forms.ConstructServiceQueryForm(&s.ServiceRequestForm, s.Discover.ServiceQueryForm)
 	return s
 }
 
-func ComposeServiceQueryForm(sqf *forms.ServiceQueryForm) []byte {
 
-	msg, _ := json.Marshal(sqf)
 
-	fmt.Println("---Inside ComposeServiceQueryForm---")
-	fmt.Println("")
-	fmt.Println(string(msg))
-	fmt.Println("")
 
-	return msg
-}
 
-func TestParseDiscover(byteValue []byte) {
 
-	var discover forms.Discover
 
-	var _ = json.Unmarshal(byteValue, &discover.ServiceQueryForm)
-
-	fmt.Println("___INSIDE ParseMessage___")
-	fmt.Println(discover.ServiceQueryForm.ServiceDefinitionRequirement)
-
-}
