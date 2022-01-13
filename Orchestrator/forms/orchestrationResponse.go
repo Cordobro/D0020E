@@ -90,10 +90,10 @@ func ConstructOrchestrationResponse(sql *ServiceQueryList) *OrchestrationRespons
 	response.Version = serviceQueryData.Version
 
 	//autorizationTokens
+	response.AuthorizationTokens.InterfaceName1 = serviceQueryData.Interfaces[0].InterfaceName
+	response.AuthorizationTokens.InterfaceName2 = serviceQueryData.Interfaces[1].InterfaceName
 
 	//warnings
-
-	/********************* OBS!! DONT HAVE YET **************************/
 
 	oResponse.Response[0] = response
 

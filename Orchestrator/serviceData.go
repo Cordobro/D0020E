@@ -16,7 +16,10 @@ type ServiceData struct {
 	TokenResult           forms.TokenData
 }
 
-func NewServiceData(request *forms.ServiceRequestForm) *ServiceData {
+func NewServiceData(byteValue []byte) *ServiceData {
+
+	var request forms.ServiceRequestForm
+	var _ = json.Unmarshal(byteValue, &request)
 
 	fmt.Println("---Inside NewServiceData---")
 	fmt.Println("")
@@ -24,14 +27,14 @@ func NewServiceData(request *forms.ServiceRequestForm) *ServiceData {
 	fmt.Println("")
 
 	s := new(ServiceData)
-	s.ServiceRequestForm = *request
+	s.ServiceRequestForm = request
 
 	return s
 }
 
-func ComposeServiceQueryForm(sql *forms.ServiceQueryForm) []byte {
+func ComposeServiceQueryForm(sqf *forms.ServiceQueryForm) []byte {
 
-	msg, _ := json.Marshal(sql)
+	msg, _ := json.Marshal(sqf)
 
 	fmt.Println("---Inside ComposeServiceQueryForm---")
 	fmt.Println("")
