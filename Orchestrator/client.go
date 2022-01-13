@@ -1,11 +1,11 @@
 package Orchestrator
 
-import(
-	"net/http"
+import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
+	"net/http"
 )
-
 
 //Client struct
 type client struct {
@@ -22,24 +22,28 @@ func NewClient(httpAdrs string) *client {
 //	SendJson()
 //	Sends Json file to target http server
 //	returns server response as json
-func ExchangeJson(c client, jsonStr []byte) []byte{
+func ExchangeJson(c client, struc interface{}) interface{}{
+
+	jsonStr, err := json.Marshal(struc)
+	errorHandler(err)
 
 	resp, err := http.Post(c.httpAdrs, "application/json", bytes.NewBuffer(jsonStr))
-	
-	if err != nil {
-		panic(err)
-	}
+	errorHandler(err)
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
+	errorHandler(err)
 
-	if err != nil {
-		//Failed to read response.
-		panic(err)
-	}
+	jsonData := []byte(body)
+	var result interface{}
 
-	result := []byte(body)
-
+	unmarshallerr := json.Unmarshal(jsonData, result)
+	errorHandler(unmarshallerr)
 	return result
 }
 
+func errorHandler(err error){
+	if err != nil {
+		panic(err)
+	}
+}
