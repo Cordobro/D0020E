@@ -22,6 +22,8 @@ type ServiceQueryForm struct {
 	PingProviders         bool `json:"pingProviders"`
 }
 
+/********************* ServiceQueryList ************************/
+
 type ServiceQueryList struct {
 	ServiceQueryData []struct {
 		ID                int `json:"id"`

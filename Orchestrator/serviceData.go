@@ -10,7 +10,7 @@ type ServiceData struct {
 	ServiceRequestForm    forms.ServiceRequestForm
 	OrchestrationResponse forms.OrchestrationResponse
 	Discover              forms.Discover
-	IntraCloudResult      forms.IntraCloudResult
+	IntraCloudResult      *forms.IntraCloudResult
 	IntraCloudRule        *forms.IntraCloudRule
 	TokenRule             *forms.TokenRule
 	TokenResult           forms.TokenData
@@ -44,18 +44,8 @@ func ComposeServiceQueryForm(sqf *forms.ServiceQueryForm) []byte {
 	return msg
 }
 
-func ParseMessage(byteValue []byte) {
+func TestParseDiscover(byteValue []byte) {
 
-	//var dat map[string]interface{}
-	/*
-		var requestForm forms.ServiceRequestForm
-
-		var _ = json.Unmarshal(byteValue, &requestForm)
-
-		fmt.Println("___INSIDE ParseMessage___")
-		fmt.Println(requestForm)
-
-	*/
 	var discover forms.Discover
 
 	var _ = json.Unmarshal(byteValue, &discover.ServiceQueryForm)

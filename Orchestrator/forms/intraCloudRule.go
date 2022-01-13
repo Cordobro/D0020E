@@ -1,5 +1,7 @@
 package forms
 
+import "fmt"
+
 /********************************* IntraCloudRule ******************************************/
 
 type IntraCloudRule struct {
@@ -62,6 +64,11 @@ func ConstructIntraCloudRule(srf *ServiceRequestForm, sql ServiceQueryList) *Int
 		//ServiceDefinitionID
 		intraCloudRule.ServiceDefinitionID = sql.ServiceQueryData[i].ID
 	}
+
+	fmt.Println("---Inside IntraCloudRule---")
+	fmt.Println("")
+	fmt.Println(intraCloudRule)
+	fmt.Println("")
 
 	return &intraCloudRule
 }
