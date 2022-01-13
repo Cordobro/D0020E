@@ -18,7 +18,7 @@ type IntraCloudRule struct {
 	ServiceDefinitionID int `json:"serviceDefinitionId"`
 }
 
-func ConstructIntraCloudRule(srf *ServiceRequestForm, sql ServiceQueryList) *IntraCloudRule {
+func ConstructIntraCloudRule(srf *ServiceRequestForm, sql *ServiceQueryList) *IntraCloudRule {
 
 	var requesterSystem = srf.RequesterSystem
 
