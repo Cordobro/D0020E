@@ -9,16 +9,15 @@ import (
 )
 
 const (
-
 	SERVICE_ADDRESS = ""
-	AUTH_ADDRESS = ""
-    CONN_PORT = ""
+	AUTH_ADDRESS    = ""
+	CONN_PORT       = ""
 )
 
 func ReadFile(searched string) string {
 
 	var a string
-	
+
 	content, err := ioutil.ReadFile("Orchestrator/Config.txt")
 
 	if err != nil {
@@ -37,14 +36,13 @@ func ReadFile(searched string) string {
 	return "error, no result"
 }
 
-func Spawn(conn net.Conn, data interface{}){
-	
-	serviceData := NewServiceData(data)
-	r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
+func Spawn(conn net.Conn, data interface{}) {
+
+	//serviceData := NewServiceData(data)
+	//r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
 	//Checks what services
-	intraCloudRule := sendServiceRequest(r)
+	//intraCloudRule := sendServiceRequest(r)
 
 	//Checks if requestor has authentication
-	
 
 }

@@ -1,2 +1,2 @@
 
-	var sqd = sql.ServiceQueryData[0]
+	s1.Discover.ServiceQueryList = sql
