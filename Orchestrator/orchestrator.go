@@ -8,12 +8,10 @@ import (
 	"strings"
 )
 
-const (
+var	SERVICE_ADDRESS string
+var	AUTH_ADDRESS string
+var CONN_PORT string
 
-	SERVICE_ADDRESS = ""
-	AUTH_ADDRESS = ""
-    CONN_PORT = ""
-)
 
 func ReadFile(searched string) string {
 
@@ -35,6 +33,16 @@ func ReadFile(searched string) string {
 		}
 	}
 	return "error, no result"
+}
+
+func SetVar(){
+
+	SERVICE_ADDRESS = ReadFile("SERVICE_ADDRESS")
+	AUTH_ADDRESS = ReadFile("AUTH_ADDRESS")
+	CONN_PORT = ReadFile("CONN_PORT")
+
+	fmt.Println(CONN_PORT)
+
 }
 
 func Spawn(conn net.Conn, data interface{}){

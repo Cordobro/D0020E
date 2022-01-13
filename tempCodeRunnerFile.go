@@ -1,2 +1,4 @@
-
-	var sqd = sql.ServiceQueryData[0]
+func main() {
+	//testServiceData()
+	o.SetVar()
+}

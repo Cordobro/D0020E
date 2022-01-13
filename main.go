@@ -1,17 +1,18 @@
 package main
 
 import (
-	/* o "arrowhead/Orchestrator"
+	o "arrowhead/Orchestrator"
 	forms "arrowhead/Orchestrator/forms"
 	"encoding/json"
-	"fmt" */
+	"fmt" 
 	//forms "arrowhead/Orchestrator/forms"
 	//"fmt"
 )
 
 func main() {
-<<<<<<< HEAD
 	testServiceData()
+	s := o.NewServer(123)
+	o.Listen(s)
 }
 
 func testServiceData() {
@@ -67,7 +68,4 @@ func testServiceData() {
 
 	//construct orchestrationResponse
 
-=======
-	
->>>>>>> 0e1aa30acbbe2ebfcd0648cf49c1f72d4a480be3
 }

@@ -53,7 +53,7 @@ func handleRequest(conn net.Conn) {
     unmarshalErr := json.Unmarshal(data, serviceRequestForm)
     errorHandler(unmarshalErr)
 	Spawn(conn, serviceRequestForm)
-  
+
 }
 
 func Respond(conn net.Conn, responseStruct net.Interface){
