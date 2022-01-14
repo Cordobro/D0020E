@@ -36,14 +36,17 @@ func ReadFile(searched string) string {
 	return "error, no result"
 }
 
-func Spawn(conn net.Conn, data interface{}){
-	
-	serviceData := NewServiceData(data)
-	r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
-	//Gives us the service
-	sendServiceRequest(r)
+func Spawn(conn net.Conn, data interface{}) {
+
+	/*
+		serviceData := NewServiceData(data)
+		r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
+		//Gives us the service
+		sendServiceRequest(r)
 
 
-	//Checks if requestor has authentication
+		//Checks if requestor has authentication
+
+	*/
 
 }
