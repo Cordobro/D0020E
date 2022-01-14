@@ -1,23 +1,11 @@
 package main
 
 import (
-<<<<<<< HEAD
 	o "arrowhead/Orchestrator"
-	forms "arrowhead/Orchestrator/forms"
+	/*forms "arrowhead/Orchestrator/forms"
 	"encoding/json"
 	"fmt"
-=======
-	 o "arrowhead/Orchestrator"
-<<<<<<< HEAD
-	//forms "arrowhead/Orchestrator/forms"
-	//"encoding/json"
-	//"fmt" 
-=======
-	forms "arrowhead/Orchestrator/forms"
-	"encoding/json"
-	"fmt" 
->>>>>>> a91626ade7e5d22b94e57f176a096036ac951b30
->>>>>>> fb29c1863f8ec0251b6bfaf75eff812182345dea
+*/
 	//forms "arrowhead/Orchestrator/forms"
 	//"fmt"
 )
@@ -87,12 +75,5 @@ func testServiceData() {
 
 	//construct orchestrationResponse
 
-<<<<<<< HEAD
-}
-
-func NewServiceQueryList(i int) {
-	panic("unimplemented")
-=======
->>>>>>> a91626ade7e5d22b94e57f176a096036ac951b30
 }
 */
