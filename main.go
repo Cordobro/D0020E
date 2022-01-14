@@ -2,20 +2,20 @@ package main
 
 import (
 	o "arrowhead/Orchestrator"
-	forms "arrowhead/Orchestrator/forms"
-	"encoding/json"
-	"fmt" 
+	//forms "arrowhead/Orchestrator/forms"
+	//"encoding/json"
+	//"fmt" 
 	//forms "arrowhead/Orchestrator/forms"
 	//"fmt"
 )
 
 func main() {
-	testServiceData()
-	s := o.NewServer(123)
+	//testServiceData()
+	s := o.NewServer("8000")
 	o.Listen(s)
 }
 
-func testServiceData() {
+/* func testServiceData() {
 
 	//A Request comes from consumer
 	request1 := new(forms.ServiceRequestForm)
@@ -69,3 +69,4 @@ func testServiceData() {
 	//construct orchestrationResponse
 
 }
+ */
