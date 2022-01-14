@@ -2,26 +2,9 @@ package main
 
 import (
 	o "arrowhead/Orchestrator"
-	forms "arrowhead/Orchestrator/forms"
+	"arrowhead/Orchestrator/forms"
 	"encoding/json"
 	"fmt"
-<<<<<<< HEAD
-=======
-=======
-	 o "arrowhead/Orchestrator"
-<<<<<<< HEAD
-	//forms "arrowhead/Orchestrator/forms"
-	//"encoding/json"
-	//"fmt" 
-=======
-	forms "arrowhead/Orchestrator/forms"
-	"encoding/json"
-	"fmt" 
->>>>>>> a91626ade7e5d22b94e57f176a096036ac951b30
->>>>>>> fb29c1863f8ec0251b6bfaf75eff812182345dea
->>>>>>> 762665df52e623e68083d3af2061dee2236993a1
-	//forms "arrowhead/Orchestrator/forms"
-	//"fmt"
 )
 
 func main() {
@@ -29,7 +12,7 @@ func main() {
 	s := o.NewServer("123")
 	o.Listen(s)
 }
-/*
+
 func testServiceData() {
 
 	//A Request comes from consumer
@@ -41,13 +24,12 @@ func testServiceData() {
 	s1 := o.NewServiceData(msg1)
 
 	//Form the request a queryForm is constructed
-	s1.Discover.ServiceQueryForm = forms.ConstructServiceQueryForm(&s1.ServiceRequestForm)
+	forms.ConstructServiceQueryForm(&s1.ServiceRequestForm, &s1.Discover.ServiceQueryForm)
 	fmt.Println("S1: ServiceQueryForm")
 	fmt.Println(s1.Discover.ServiceQueryForm)
 	fmt.Println("")
 
 	//marshal the form
-	o.ComposeServiceQueryForm(s1.Discover.ServiceQueryForm)
 
 	//pretend to send query
 
@@ -66,7 +48,7 @@ func testServiceData() {
 	fmt.Println(sql)
 	fmt.Println("")
 
-	s1.Discover.ServiceQueryList = sql
+	s1.Discover.ServiceQueryList = *sql
 
 	fmt.Println("s1.Discover.ServiceQueryList")
 	fmt.Println(s1.Discover.ServiceQueryList)
@@ -74,12 +56,9 @@ func testServiceData() {
 
 	//construct intraCloudRule
 
-	s1.IntraCloudRule = forms.ConstructIntraCloudRule(&s1.ServiceRequestForm, &s1.Discover)
+	forms.ConstructIntraCloudRule(&s1.ServiceRequestForm, &s1.Discover, &s1.IntraCloudRule)
 
 	//get result
-
-	icres := new(forms.IntraCloudResult)
-	s1.IntraCloudResult = icres
 
 	//construct tokenRule
 
@@ -90,4 +69,3 @@ func testServiceData() {
 	//construct orchestrationResponse
 
 }
-*/
