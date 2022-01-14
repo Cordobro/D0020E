@@ -41,9 +41,7 @@ type OrchestrationResponse struct {
 
 //This is assuming we have already run the matchmaker and will only return one service to the consumer (the best one)
 
-func ConstructOrchestrationResponse(sql *ServiceQueryList) *OrchestrationResponse {
-
-	var oResponse OrchestrationResponse
+func ConstructOrchestrationResponse(sql *ServiceQueryList, oResponse *OrchestrationResponse) {
 
 	var serviceQueryData = sql.ServiceQueryData[0]
 	var response = oResponse.Response[0]
@@ -96,7 +94,5 @@ func ConstructOrchestrationResponse(sql *ServiceQueryList) *OrchestrationRespons
 	//warnings
 
 	oResponse.Response[0] = response
-
-	return &oResponse
 
 }
