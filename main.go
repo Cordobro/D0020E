@@ -25,13 +25,12 @@ func testServiceData() {
 	s1 := o.NewServiceData(msg1)
 
 	//Form the request a queryForm is constructed
-	s1.Discover.ServiceQueryForm = forms.ConstructServiceQueryForm(&s1.ServiceRequestForm)
+	forms.ConstructServiceQueryForm(&s1.ServiceRequestForm, &s1.Discover.ServiceQueryForm)
 	fmt.Println("S1: ServiceQueryForm")
 	fmt.Println(s1.Discover.ServiceQueryForm)
 	fmt.Println("")
 
 	//marshal the form
-	o.ComposeServiceQueryForm(s1.Discover.ServiceQueryForm)
 
 	//pretend to send query
 
@@ -50,7 +49,7 @@ func testServiceData() {
 	fmt.Println(sql)
 	fmt.Println("")
 
-	s1.Discover.ServiceQueryList = sql
+	s1.Discover.ServiceQueryList = *sql
 
 	fmt.Println("s1.Discover.ServiceQueryList")
 	fmt.Println(s1.Discover.ServiceQueryList)
@@ -58,12 +57,9 @@ func testServiceData() {
 
 	//construct intraCloudRule
 
-	s1.IntraCloudRule = forms.ConstructIntraCloudRule(&s1.ServiceRequestForm, &s1.Discover)
+	forms.ConstructIntraCloudRule(&s1.ServiceRequestForm, &s1.Discover, &s1.IntraCloudRule)
 
 	//get result
-
-	icres := new(forms.IntraCloudResult)
-	s1.IntraCloudResult = icres
 
 	//construct tokenRule
 

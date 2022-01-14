@@ -22,10 +22,3 @@ func NewServiceData(serviceRequest interface{}) *ServiceData {
 	forms.ConstructServiceQueryForm(&s.ServiceRequestForm, &s.Discover.ServiceQueryForm)
 	return s
 }
-
-
-
-
-
-
-
