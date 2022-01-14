@@ -2,42 +2,15 @@ package main
 
 import (
 	o "arrowhead/Orchestrator"
-<<<<<<< HEAD
-	"arrowhead/Orchestrator/forms"
-	"encoding/json"
-	"fmt"
-=======
-	/*forms "arrowhead/Orchestrator/forms"
-	"encoding/json"
-	"fmt"
-<<<<<<< HEAD
-*/
-=======
-<<<<<<< HEAD
-=======
-=======
-	 o "arrowhead/Orchestrator"
-<<<<<<< HEAD
-	//forms "arrowhead/Orchestrator/forms"
-	//"encoding/json"
-	//"fmt" 
-=======
 	forms "arrowhead/Orchestrator/forms"
 	"encoding/json"
-	"fmt" 
->>>>>>> a91626ade7e5d22b94e57f176a096036ac951b30
->>>>>>> fb29c1863f8ec0251b6bfaf75eff812182345dea
->>>>>>> 762665df52e623e68083d3af2061dee2236993a1
->>>>>>> b85f938bc030b20ad272ff6d0caa70a68d09253d
-	//forms "arrowhead/Orchestrator/forms"
-	//"fmt"
->>>>>>> b5ae885e0450ca2facfb8695818a4fd1aa67872e
+	"fmt"
 )
 
 func main() {
-	//testServiceData()
-	s := o.NewServer("123")
-	o.Listen(s)
+	testServiceData()
+	//s := o.NewServer("123")
+	//o.Listen(s)
 }
 
 func testServiceData() {
@@ -47,8 +20,13 @@ func testServiceData() {
 	request1.RequestedService.ServiceDefinitionRequirement = "GE MIG TEMP"
 	msg1, _ := json.Marshal(request1)
 
+	var res1 interface{}
+	if err := json.Unmarshal(msg1, &res1); err != nil {
+		panic(err)
+	}
+
 	//New serviceData is created for each request
-	s1 := o.NewServiceData(msg1)
+	s1 := o.NewServiceData(res1)
 
 	//Form the request a queryForm is constructed
 	forms.ConstructServiceQueryForm(&s1.ServiceRequestForm, &s1.Discover.ServiceQueryForm)
