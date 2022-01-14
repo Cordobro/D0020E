@@ -32,7 +32,8 @@ func sendAuthQuery(r *request) {
 /*
 func sendTokenQuery(r *request) {
 	authClient := NewClient(r.authAdrs)
-	r.data.TokenResult := ExchangeJson(*authClient, )
+	tokenResult := ExchangeJson(*authClient, r.data.TokenRule)
+	r.data.IntraCloudResult = tokenResult.(forms.IntraCloudResult)
 }
 */
 
