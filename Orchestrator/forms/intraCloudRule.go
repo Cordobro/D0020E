@@ -18,6 +18,12 @@ type IntraCloudRule struct {
 	ServiceDefinitionID int `json:"serviceDefinitionId"`
 }
 
+type ProviderIdsWithInterfaceIds struct {
+	ID     int   `json:"id"`
+	IDList []int `json:"idList"`
+}
+
+//Only constructs for first element in SRF
 func ConstructIntraCloudRule(srf *ServiceRequestForm, discover *Discover) *IntraCloudRule {
 
 	fmt.Println("---Inside ConstructIntraCloudRule ---")
@@ -49,7 +55,7 @@ func ConstructIntraCloudRule(srf *ServiceRequestForm, discover *Discover) *Intra
 
 	/***ProviderIdsWithInterfaceIds***/
 
-	var amountOfAvaliableServices = len(sql.ServiceQueryData)
+	var amountOfAvaliableServices = len(sql.ServiceQueryData) //May be wrong loop variable
 
 	fmt.Println("--- before loop ---")
 	fmt.Println(intraCloudRule)
@@ -57,14 +63,12 @@ func ConstructIntraCloudRule(srf *ServiceRequestForm, discover *Discover) *Intra
 
 	for i := 0; i < amountOfAvaliableServices; i++ {
 
+		providerIdsWithInterfaceIds := new(ProviderIdsWithInterfaceIds)
+
 		//ID
-		var providerID = sql.ServiceQueryData[i].Provider.ID
+		providerIdsWithInterfaceIds.ID = sql.ServiceQueryData[i].Provider.ID
 
 		var interfaceLength = len(sql.ServiceQueryData[i].Interfaces)
-
-		fmt.Println("--- provider ID ---")
-		fmt.Println(providerID)
-		fmt.Println("")
 
 		fmt.Println("--- interfaceLength ---")
 		fmt.Println(interfaceLength)
@@ -79,13 +83,14 @@ func ConstructIntraCloudRule(srf *ServiceRequestForm, discover *Discover) *Intra
 			interfaceIDList = append(interfaceIDList, interfaceID)
 		}
 
-		intraCloudRule.ProviderIdsWithInterfaceIds[i].ID = providerID
-		intraCloudRule.ProviderIdsWithInterfaceIds[i].IDList = interfaceIDList[:]
+		providerIdsWithInterfaceIds.IDList = append(providerIdsWithInterfaceIds.IDList, interfaceIDList...)
 
-		//ServiceDefinitionID
-		intraCloudRule.ServiceDefinitionID = sql.ServiceQueryData[i].ID
+		intraCloudRule.ProviderIdsWithInterfaceIds = append(intraCloudRule.ProviderIdsWithInterfaceIds, *providerIdsWithInterfaceIds)
 
 	}
+
+	//ServiceDefinitionID
+	intraCloudRule.ServiceDefinitionID = sql.ServiceQueryData[0].ServiceDefinition.ID
 
 	fmt.Println("---IntraCloudRule---")
 	fmt.Println("")
