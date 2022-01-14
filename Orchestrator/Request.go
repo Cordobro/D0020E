@@ -15,22 +15,26 @@ func NewRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *reque
 	return &r
 }
 
-func sendServiceRequest(r *request) *forms.IntraCloudRule {
-	/*
-		serviceRegClient := NewClient(r.serviceRegAdrs)
-		serviceQueryList := ExchangeJson(*serviceRegClient, r.data.Discover.ServiceQueryForm)
-	*/
+func sendServiceRequest(r *request) {
 
-	//Ger error need fix
-	//r.data.Discover.ServiceQueryList = &serviceQueryList.(*forms.ServiceQueryList)
+	serviceRegClient := NewClient(r.serviceRegAdrs)
+	serviceQueryList := ExchangeJson(*serviceRegClient, r.data.Discover.ServiceQueryForm)
 
-	return forms.ConstructIntraCloudRule(&r.data.ServiceRequestForm, &r.data.Discover)
+	r.data.Discover.ServiceQueryList = serviceQueryList.(forms.ServiceQueryList)
 }
 
-func sendAuthQuery(r *request) *forms.InterCloudResult {
+func sendAuthQuery(r *request) {
 	authClient := NewClient(r.authAdrs)
-	intraCloudResult := ExchangeJson(*authClient, r.data.ServiceRequestForm)
-	return intraCloudResult.(*forms.InterCloudResult)
+	intraCloudResult := ExchangeJson(*authClient, r.data.IntraCloudRule)
+	r.data.IntraCloudResult = intraCloudResult.(forms.IntraCloudResult)
 }
+
+/*
+func sendTokenQuery(r *request) {
+	authClient := NewClient(r.authAdrs)
+	tokenResult := ExchangeJson(*authClient, r.data.TokenRule)
+	r.data.IntraCloudResult = tokenResult.(forms.IntraCloudResult)
+}
+*/
 
 //func Matchmaker(r *request) {}
