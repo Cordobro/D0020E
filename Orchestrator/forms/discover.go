@@ -3,8 +3,8 @@ package forms
 import "fmt"
 
 type Discover struct {
-	ServiceQueryForm *ServiceQueryForm
-	ServiceQueryList *ServiceQueryList
+	ServiceQueryForm ServiceQueryForm
+	ServiceQueryList ServiceQueryList
 }
 
 type ServiceQueryForm struct {
@@ -25,42 +25,47 @@ type ServiceQueryForm struct {
 /********************* ServiceQueryList ************************/
 
 type ServiceQueryList struct {
-	ServiceQueryData []struct {
-		ID                int `json:"id"`
-		ServiceDefinition struct {
-			ID                int    `json:"id"`
-			ServiceDefinition string `json:"serviceDefinition"`
-			CreatedAt         string `json:"createdAt"`
-			UpdatedAt         string `json:"updatedAt"`
-		} `json:"serviceDefinition"`
-		Provider struct {
-			ID                 int    `json:"id"`
-			SystemName         string `json:"systemName"`
-			Address            string `json:"address"`
-			Port               int    `json:"port"`
-			AuthenticationInfo string `json:"authenticationInfo"`
-			CreatedAt          string `json:"createdAt"`
-			UpdatedAt          string `json:"updatedAt"`
-		} `json:"provider"`
-		ServiceURI    string `json:"serviceUri"`
-		EndOfValidity string `json:"endOfValidity"`
-		Secure        string `json:"secure"`
-		Metadata      struct {
-			AdditionalProp1 string `json:"additionalProp1"`
-			AdditionalProp2 string `json:"additionalProp2"`
-			AdditionalProp3 string `json:"additionalProp3"`
-		} `json:"metadata"`
-		Version    int `json:"version"`
-		Interfaces []struct {
-			ID            int    `json:"id"`
-			InterfaceName string `json:"interfaceName"`
-			CreatedAt     string `json:"createdAt"`
-			UpdatedAt     string `json:"updatedAt"`
-		} `json:"interfaces"`
-		CreatedAt string `json:"createdAt"`
-		UpdatedAt string `json:"updatedAt"`
-	} `json:"serviceQueryData"`
-	UnfilteredHits int `json:"unfilteredHits"`
+	ServiceQueryData []ServiceQueryData `json:"serviceQueryData"`
+	UnfilteredHits   int                `json:"unfilteredHits"`
+}
+type ServiceDefinition struct {
+	ID                int    `json:"id"`
+	ServiceDefinition string `json:"serviceDefinition"`
+	CreatedAt         string `json:"createdAt"`
+	UpdatedAt         string `json:"updatedAt"`
+}
+type Provider struct {
+	ID                 int    `json:"id"`
+	SystemName         string `json:"systemName"`
+	Address            string `json:"address"`
+	Port               int    `json:"port"`
+	AuthenticationInfo string `json:"authenticationInfo"`
+	CreatedAt          string `json:"createdAt"`
+	UpdatedAt          string `json:"updatedAt"`
+}
+type Metadata struct {
+	AdditionalProp1 string `json:"additionalProp1"`
+	AdditionalProp2 string `json:"additionalProp2"`
+	AdditionalProp3 string `json:"additionalProp3"`
+}
+type Interfaces struct {
+	ID            int    `json:"id"`
+	InterfaceName string `json:"interfaceName"`
+	CreatedAt     string `json:"createdAt"`
+	UpdatedAt     string `json:"updatedAt"`
+}
+type ServiceQueryData struct {
+	ID                int               `json:"id"`
+	ServiceDefinition ServiceDefinition `json:"serviceDefinition"`
+	Provider          Provider          `json:"provider"`
+	ServiceURI        string            `json:"serviceUri"`
+	EndOfValidity     string            `json:"endOfValidity"`
+	Secure            string            `json:"secure"`
+	Metadata          Metadata          `json:"metadata"`
+	Version           int               `json:"version"`
+	Interfaces        []Interfaces      `json:"interfaces"`
+	CreatedAt         string            `json:"createdAt"`
+	UpdatedAt         string            `json:"updatedAt"`
 }
 
 func ConstructServiceQueryForm(srf *ServiceRequestForm, serviceQueryForm *ServiceQueryForm){
@@ -96,4 +101,31 @@ func ConstructServiceQueryForm(srf *ServiceRequestForm, serviceQueryForm *Servic
 	fmt.Println(serviceQueryForm)
 	fmt.Println("")
 
+}
+
+/********* Testing ************/
+
+func TestNewServiceQueryList(size int) *ServiceQueryList {
+
+	sql := new(ServiceQueryList)
+
+	for i := 0; i < size; i++ {
+		sqd := new(ServiceQueryData)
+		sql.ServiceQueryData = append(sql.ServiceQueryData, *sqd)
+
+		for j := 0; j < size; j++ {
+
+			in := new(Interfaces)
+			sql.ServiceQueryData[i].Interfaces = append(sql.ServiceQueryData[i].Interfaces, *in)
+		}
+
+	}
+
+	fmt.Println()
+	fmt.Println("--- Inside NewServiceQueryList ---")
+	fmt.Println()
+	fmt.Println("ServiceQueryData Size: ", len(sql.ServiceQueryData))
+	fmt.Println()
+
+	return sql
 }

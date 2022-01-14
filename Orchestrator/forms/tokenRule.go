@@ -22,15 +22,15 @@ type ConsumerCloud struct {
 	Operator           string `json:"operator"`
 	Secure             bool   `json:"secure"`
 }
-type Provider struct {
+type Provider2 struct {
 	Address            string `json:"address"`
 	AuthenticationInfo string `json:"authenticationInfo"`
 	Port               int    `json:"port"`
 	SystemName         string `json:"systemName"`
 }
 type Providers struct {
-	Provider          Provider `json:"provider"`
-	ServiceInterfaces []string `json:"serviceInterfaces"`
+	Provider          Provider2 `json:"provider"`
+	ServiceInterfaces []string  `json:"serviceInterfaces"`
 }
 
 func ConstructTokenRule(srf *ServiceRequestForm) *TokenRule {

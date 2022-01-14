@@ -18,9 +18,22 @@ type IntraCloudRule struct {
 	ServiceDefinitionID int `json:"serviceDefinitionId"`
 }
 
-func ConstructIntraCloudRule(srf *ServiceRequestForm, sql ServiceQueryList) *IntraCloudRule {
+<<<<<<< HEAD
+func ConstructIntraCloudRule(srf *ServiceRequestForm, sql *ServiceQueryList) *IntraCloudRule {
+=======
+func ConstructIntraCloudRule(srf *ServiceRequestForm, discover *Discover) *IntraCloudRule {
+
+	fmt.Println("---Inside ConstructIntraCloudRule ---")
+	fmt.Println("")
+>>>>>>> fb29c1863f8ec0251b6bfaf75eff812182345dea
 
 	var requesterSystem = srf.RequesterSystem
+
+	var sql = discover.ServiceQueryList
+
+	fmt.Println("--- sql len ---")
+	fmt.Println(len(sql.ServiceQueryData))
+	fmt.Println("")
 
 	var intraCloudRule IntraCloudRule
 
@@ -42,12 +55,24 @@ func ConstructIntraCloudRule(srf *ServiceRequestForm, sql ServiceQueryList) *Int
 
 	var amountOfAvaliableServices = len(sql.ServiceQueryData)
 
+	fmt.Println("--- before loop ---")
+	fmt.Println(intraCloudRule)
+	fmt.Println("")
+
 	for i := 0; i < amountOfAvaliableServices; i++ {
 
 		//ID
 		var providerID = sql.ServiceQueryData[i].Provider.ID
 
 		var interfaceLength = len(sql.ServiceQueryData[i].Interfaces)
+
+		fmt.Println("--- provider ID ---")
+		fmt.Println(providerID)
+		fmt.Println("")
+
+		fmt.Println("--- interfaceLength ---")
+		fmt.Println(interfaceLength)
+		fmt.Println("")
 
 		//IDList
 		var interfaceIDList []int
@@ -63,9 +88,10 @@ func ConstructIntraCloudRule(srf *ServiceRequestForm, sql ServiceQueryList) *Int
 
 		//ServiceDefinitionID
 		intraCloudRule.ServiceDefinitionID = sql.ServiceQueryData[i].ID
+
 	}
 
-	fmt.Println("---Inside IntraCloudRule---")
+	fmt.Println("---IntraCloudRule---")
 	fmt.Println("")
 	fmt.Println(intraCloudRule)
 	fmt.Println("")
