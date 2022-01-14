@@ -3,8 +3,8 @@ package forms
 import "fmt"
 
 type Discover struct {
-	ServiceQueryForm *ServiceQueryForm
-	ServiceQueryList *ServiceQueryList
+	ServiceQueryForm ServiceQueryForm
+	ServiceQueryList ServiceQueryList
 }
 
 type ServiceQueryForm struct {

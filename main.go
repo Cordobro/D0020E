@@ -5,14 +5,31 @@ import (
 	forms "arrowhead/Orchestrator/forms"
 	"encoding/json"
 	"fmt"
+<<<<<<< HEAD
+=======
+=======
+	 o "arrowhead/Orchestrator"
+<<<<<<< HEAD
+	//forms "arrowhead/Orchestrator/forms"
+	//"encoding/json"
+	//"fmt" 
+=======
+	forms "arrowhead/Orchestrator/forms"
+	"encoding/json"
+	"fmt" 
+>>>>>>> a91626ade7e5d22b94e57f176a096036ac951b30
+>>>>>>> fb29c1863f8ec0251b6bfaf75eff812182345dea
+>>>>>>> 762665df52e623e68083d3af2061dee2236993a1
 	//forms "arrowhead/Orchestrator/forms"
 	//"fmt"
 )
 
 func main() {
-	testServiceData()
+	//testServiceData()
+	s := o.NewServer("123")
+	o.Listen(s)
 }
-
+/*
 func testServiceData() {
 
 	//A Request comes from consumer
@@ -73,3 +90,4 @@ func testServiceData() {
 	//construct orchestrationResponse
 
 }
+*/
