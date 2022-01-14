@@ -2,9 +2,13 @@ package Orchestrator
 
 import (
 	"fmt"
+	"log"
 	"net"
-	"strconv"
-    "encoding/json"
+
+	//"os"
+
+	//"strconv"
+	"encoding/json"
 )
 
 type server struct{	
@@ -41,20 +45,36 @@ func Listen(s *server) {
 
 // Handles incoming requests.
 func handleRequest(conn net.Conn) {
+
   // Make a buffer to hold incoming data.
 	buf := make([]byte, 1024)
   // Read the incoming connection into the buffer.
-	reqLen, err := conn.Read(buf)
+
+	_, err := conn.Read(buf)
 	errorHandler(err)
 
-	data := []byte(strconv.Itoa(reqLen))
+	//data := []byte(strconv.Itoa(reqLen))
 
     var serviceRequestForm interface{}
-    unmarshalErr := json.Unmarshal(data, serviceRequestForm)
-    errorHandler(unmarshalErr)
-	Spawn(conn, serviceRequestForm)
 
+
+    fmt.Println(string(buf))
+
+    buf = RemoveHeader(buf)
+    fmt.Println(string(buf))
+
+	Spawn(conn, serviceRequestForm)
 }
+
+
+func RemoveHeader(fix []byte) []byte{
+    if fix[0] == []byte("{")[0]{
+        return fix
+    }else{
+        return RemoveHeader(fix[1:])
+    }
+}
+
 
 func Respond(conn net.Conn, responseStruct interface{}){
     jsonData, err := json.Marshal(responseStruct)
