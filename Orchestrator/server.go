@@ -2,7 +2,7 @@ package Orchestrator
 
 import (
 	"fmt"
-	"log"
+	//"log"
 	"net"
 
 	//"os"
@@ -47,25 +47,24 @@ func Listen(s *server) {
 func handleRequest(conn net.Conn) {
 
   // Make a buffer to hold incoming data.
-	buf := make([]byte, 1024)
+	buf := make([]byte, 2048)
   // Read the incoming connection into the buffer.
-
 	_, err := conn.Read(buf)
 	errorHandler(err)
 
-	//data := []byte(strconv.Itoa(reqLen))
-
     var serviceRequestForm interface{}
-
-
-    fmt.Println(string(buf))
+    //fmt.Println(string(buf))
 
     buf = RemoveHeader(buf)
-    fmt.Println(string(buf))
+    buf = RemoveEnd(buf)
+
+    if err := json.Unmarshal(buf, &serviceRequestForm); err != nil {
+        panic(err)
+    }
+    //fmt.Println(serviceRequestForm) 
 
 	Spawn(conn, serviceRequestForm)
 }
-
 
 func RemoveHeader(fix []byte) []byte{
     if fix[0] == []byte("{")[0]{
@@ -73,6 +72,15 @@ func RemoveHeader(fix []byte) []byte{
     }else{
         return RemoveHeader(fix[1:])
     }
+}
+
+func RemoveEnd(fix []byte) []byte{
+    for i := 0; i < len(fix); i++ {
+        if fix[i] == 0 {
+            return fix[0:i]
+        }
+    }
+    return fix
 }
 
 
