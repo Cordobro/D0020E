@@ -7,10 +7,7 @@ import (
 )
 
 
-func SetupServer(port string, funcHandle string){
-    http.HandleFunc(funcHandle, Listen)
-    http.ListenAndServe(port, nil)
-}
+
 
 func Listen(rw http.ResponseWriter, req *http.Request) {
     body, err := ioutil.ReadAll(req.Body)
@@ -18,6 +15,8 @@ func Listen(rw http.ResponseWriter, req *http.Request) {
         panic(err)
     }
 	
+    Spawn(body)
+
     var t interface{}
     err = json.Unmarshal(body, &t)
 	if err != nil {
@@ -25,6 +24,16 @@ func Listen(rw http.ResponseWriter, req *http.Request) {
     }
 
     Respond(rw, t)
+}
+
+func Respond(rw http.ResponseWriter, responseStruct interface{}){
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(responseStruct) 
+}
+
+func SetupServer(port string, funcHandle string){ 
+    http.HandleFunc(funcHandle, Listen)
+    http.ListenAndServe(port, nil)
 }
 
 /*
@@ -85,7 +94,7 @@ func handleRequest(conn net.Conn) {
 	Spawn(conn, serviceRequestForm)
 }
 */
-
+/*
 func RemoveHeader(fix []byte) []byte{
     if fix[0] == []byte("{")[0]{
         return fix
@@ -95,11 +104,8 @@ func RemoveHeader(fix []byte) []byte{
 }
 
 
-func Respond(rw http.ResponseWriter, responseStruct interface{}){
-	rw.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(rw).Encode(responseStruct) 
-}
 
+*/
 
 
 

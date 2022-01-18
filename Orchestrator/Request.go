@@ -1,6 +1,10 @@
 package Orchestrator
 
-import forms "arrowhead/Orchestrator/forms"
+import (
+	forms "arrowhead/Orchestrator/forms"
+	"encoding/json"
+
+)
 
 type request struct {
 	data           ServiceData
@@ -18,23 +22,32 @@ func NewRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *reque
 func sendServiceRequest(r *request) {
 
 	serviceRegClient := NewClient(r.serviceRegAdrs)
-	serviceQueryList := ExchangeJson(serviceRegClient, r.data.Discover.ServiceQueryForm)
-
-	r.data.Discover.ServiceQueryList = serviceQueryList.(forms.ServiceQueryList)
+	serviceQueryListJson := ExchangeJson(serviceRegClient, r.data.Discover.ServiceQueryForm)
+	var serviceQueryList forms.ServiceQueryList
+	err := json.Unmarshal(serviceQueryListJson, &serviceQueryList)
+	errorHandler(err)
+	r.data.Discover.ServiceQueryList = serviceQueryList
 }
-
+/*
 func sendAuthQuery(r *request) {
 	authClient := NewClient(r.authAdrs)
-	intraCloudResult := ExchangeJson(authClient, r.data.IntraCloudRule)
-	r.data.IntraCloudResult = intraCloudResult.(forms.IntraCloudResult)
+	intraCloudResultJson := ExchangeJson(authClient, r.data.IntraCloudRule)
+	var intraCloudResult forms.IntraCloudResult
+	err := json.Unmarshal(intraCloudResultJson, &intraCloudResult)
+	errorHandler(err)
+	r.data.IntraCloudResult = intraCloudResult
 }
 
-/*
+
 func sendTokenQuery(r *request) {
 	authClient := NewClient(r.authAdrs)
-	tokenResult := ExchangeJson(*authClient, r.data.TokenRule)
-	r.data.IntraCloudResult = tokenResult.(forms.IntraCloudResult)
+	tokenResultJson := ExchangeJson(authClient, r.data.TokenRule)
+	var tokenResult forms.TokenResult
+	err := json.Unmarshal(tokenResultJson, &tokenResult)
+	errorHandler(err)
+	r.data.TokenResult = tokenResult
 }
 */
-
-//func Matchmaker(r *request) {}
+func Matchmaker(r *request) {
+	forms.ConstructOrchestrationResponse(&r.data.Discover.ServiceQueryList, &r.data.OrchestrationResponse)
+}

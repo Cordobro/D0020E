@@ -1,3 +1,4 @@
-SERVICE_ADDRESS "1.1.1.1"
-AUTH_ADDRESS "2.2.2.2"
-CONN_PORT "123"
+SERVICE_ADDRESS "http://localhost:8001/serviceRegistry"
+AUTH_ADDRESS "http://localhost:8002/auth"
+CONN_PORT ":8000"
+LISTEN_HANDLE "/Orc"

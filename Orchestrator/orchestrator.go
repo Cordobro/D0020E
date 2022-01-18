@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net"
 	"strings"
 )
 
 var	SERVICE_ADDRESS string
 var	AUTH_ADDRESS string
-var CONN_PORT string
-
 
 func ReadFile(searched string) string {
 
@@ -35,24 +32,18 @@ func ReadFile(searched string) string {
 	return "error, no result"
 }
 
-func SetVar(){
-
+func InitOrchestrator(){
 	SERVICE_ADDRESS = ReadFile("SERVICE_ADDRESS")
 	AUTH_ADDRESS = ReadFile("AUTH_ADDRESS")
-	CONN_PORT = ReadFile("CONN_PORT")
-
-	fmt.Println(CONN_PORT)
-
 }
 
-func Spawn(conn net.Conn, data interface{}){
-/* 	
+func Spawn(data []byte) interface{}{
 	serviceData := NewServiceData(data)
 	r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
-	//Checks what services
-	//intraCloudRule := sendServiceRequest(r)
-
-	//Checks if requestor has authentication
-	 */
-
+	sendServiceRequest(r)
+	//sendAuthQuery(r)
+	//sendTokenQuery(r)
+	Matchmaker(r)
+	
+	return r.data.OrchestrationResponse
 }
