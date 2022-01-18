@@ -2,15 +2,25 @@ package main
 
 import (
 	o "arrowhead/Orchestrator"
-	//forms "arrowhead/Orchestrator/forms"
+	forms "arrowhead/Orchestrator/forms"
+	"fmt"
+	
 	//"encoding/json"
 	//"fmt"
 )
 
 func main() {
 	//testServiceData()
-	s := o.NewServer("8000")
-	o.Listen(s)
+	
+	go o.SetupServer(":8000", "/")
+
+	var c = o.NewClient("http://localhost:8000")
+	var request1 forms.ServiceRequestForm
+	request1.RequestedService.ServiceDefinitionRequirement = "temp";
+	res := o.ExchangeJson(c, request1)
+	fmt.Println(res);
+	
+
 }
 
 /* func testServiceData() {
