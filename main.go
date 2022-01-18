@@ -2,56 +2,55 @@ package main
 
 import (
 	o "arrowhead/Orchestrator"
-	"io/ioutil"
-	//"time"
-
-	//"arrowhead/Orchestrator/forms"
-	"bytes"
-	"net/http"
-
-	forms "arrowhead/Orchestrator/forms"
-	"fmt"
-
+	"arrowhead/Orchestrator/forms"
 	"encoding/json"
+	"fmt"
+	//"time"
+	//"arrowhead/Orchestrator/forms"
 	//"fmt"
 )
 
-
-
-
 func main() {
+
 	CONN_PORT := o.ReadFile("CONN_PORT")
 	LISTEN_HANDLE := o.ReadFile("LISTEN_HANDLE")
 	o.InitOrchestrator()
-	go o.SetupServer(CONN_PORT, LISTEN_HANDLE)
 
-	http.HandleFunc("/ServiceRegistry", serviceRegistry)
-    go http.ListenAndServe(":8001", nil)
+	/* http.HandleFunc(LISTEN_HANDLE, o.Listen)
+	http.ListenAndServe(CONN_PORT, nil) */
 
-	var serviceRequestForm forms.ServiceRequestForm
-	serviceRequestForm.RequestedService.MetadataRequirements.AdditionalProp1 = "Icecream"
-	
-	requestor("https://localhost:8000/", serviceRequestForm)
-	
+	o.SetupServer(CONN_PORT, LISTEN_HANDLE)
+
+	//testServiceData()
+
+	/*
+			http.HandleFunc("/ServiceRegistry", serviceRegistry)
+		    go http.ListenAndServe(":8001", nil)
+
+			var serviceRequestForm forms.ServiceRequestForm
+			serviceRequestForm.RequestedService.MetadataRequirements.AdditionalProp1 = "Icecream"
+
+			requestor("https://localhost:8000/", serviceRequestForm) */
+
 }
 
-func serviceRegistry(rw http.ResponseWriter, req *http.Request) {
+/* func serviceRegistry(rw http.ResponseWriter, req *http.Request) {
     body, err := ioutil.ReadAll(req.Body)
     if err != nil {
         panic(err)
     }
-	
-    
+
+
 
     var t interface{}
     err = json.Unmarshal(body, &t)
 	if err != nil {
         panic(err)
     }
-	
+
 	rw.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(rw).Encode(t) 
-	
+	json.NewEncoder(rw).Encode(t)
+
 
 }
 
@@ -63,19 +62,21 @@ func requestor(url string, struc interface{}) {
 	errorHandler(err);
 	defer resp.Body.Close()
 
-	
+
 	jsonBody, err := ioutil.ReadAll(resp.Body)
 	errorHandler(err)
-	
+
 	fmt.Println(jsonBody)
 }
+*/
 
-func errorHandler(err error){
+func errorHandler(err error) {
 	if err != nil {
 		panic(err)
 	}
 }
-/* func testServiceData() {
+
+func testServiceData() {
 
 	//A Request comes from consumer
 	var request1 forms.ServiceRequestForm
@@ -142,4 +143,3 @@ func errorHandler(err error){
 func NewServiceQueryList(i int) {
 	panic("unimplemented")
 }
- */

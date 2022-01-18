@@ -1,4 +1,4 @@
-package testing
+package main
 
 import (
 	"encoding/json"
@@ -70,13 +70,15 @@ func newServiceQueryList(size int) *ServiceQueryList {
 
 func listen(rw http.ResponseWriter, req *http.Request) {
 
-	fmt.Println("Listening...")
+	fmt.Println("Received a reuest")
 
 	response := newServiceQueryList(2)
 
 	response.ServiceQueryData[0].Provider.SystemName = "THIS IS A TEST"
 	response.ServiceQueryData[0].Provider.ID = 69
 	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS FKIN WORKS"
+
+	fmt.Println("Sending ServiceQueryList...")
 
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(response)
@@ -85,6 +87,8 @@ func listen(rw http.ResponseWriter, req *http.Request) {
 
 func main() {
 
-	http.HandleFunc("http://localhost:8001/serviceRegistry", listen)
+	fmt.Println("Starting up...")
+
+	http.HandleFunc("/serviceRegistry", listen)
 	http.ListenAndServe(":8001", nil)
 }

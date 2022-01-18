@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-var	SERVICE_ADDRESS string
-var	AUTH_ADDRESS string
+var SERVICE_ADDRESS string
+var AUTH_ADDRESS string
 
 func ReadFile(searched string) string {
 
@@ -32,37 +32,18 @@ func ReadFile(searched string) string {
 	return "error, no result"
 }
 
-func InitOrchestrator(){
+func InitOrchestrator() {
 	SERVICE_ADDRESS = ReadFile("SERVICE_ADDRESS")
 	AUTH_ADDRESS = ReadFile("AUTH_ADDRESS")
-<<<<<<< HEAD
-	CONN_PORT = ReadFile("CONN_PORT")
-
-	//fmt.Println(CONN_PORT)
-
 }
 
-func Spawn(conn net.Conn, data interface{}){
-	
-	serviceData := NewServiceData(data)
-	r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
-	//Checks what services
-	//intraCloudRule := sendServiceRequest(r)
-
-	//Checks if requestor has authentication
-	
-
-=======
-}
-
-func Spawn(data []byte) interface{}{
+func Spawn(data []byte) interface{} {
 	serviceData := NewServiceData(data)
 	r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
 	sendServiceRequest(r)
 	//sendAuthQuery(r)
 	//sendTokenQuery(r)
 	Matchmaker(r)
-	
+
 	return r.data.OrchestrationResponse
->>>>>>> 58dd4d2bcfd6d6a09cc13104f7ee865b69efb275
 }
