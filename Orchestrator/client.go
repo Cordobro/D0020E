@@ -3,7 +3,7 @@ package Orchestrator
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	
 	"io/ioutil"
 	"net/http"
 	//forms "arrowhead/Orchestrator/forms"
@@ -22,22 +22,18 @@ func NewClient(httpAdrs string) *client {
 }
 
 
-func ExchangeJson(c *client, struc interface{}) interface{}{
+func ExchangeJson(c *client, struc interface{}) []byte{
 	jsonStr, err := json.Marshal(struc)
 	errorHandler(err)
     resp, err := http.Post(c.httpAdrs, "application/json", bytes.NewBuffer(jsonStr))
 	errorHandler(err);
 	defer resp.Body.Close()
 
-	var jsonBody []byte
-	jsonBody, err = ioutil.ReadAll(resp.Body)
-	errorHandler(err)
-	fmt.Println(string(jsonBody))
 	
-	var result interface{}
-	err = json.Unmarshal(jsonBody, &result)
+	jsonBody, err := ioutil.ReadAll(resp.Body)
 	errorHandler(err)
-	return result
+	
+	return jsonBody
 }
 
 

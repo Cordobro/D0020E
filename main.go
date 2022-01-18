@@ -2,27 +2,79 @@ package main
 
 import (
 	o "arrowhead/Orchestrator"
+	"io/ioutil"
+	//"time"
+
+	//"arrowhead/Orchestrator/forms"
+	"bytes"
+	"net/http"
+
 	forms "arrowhead/Orchestrator/forms"
 	"fmt"
-	
-	//"encoding/json"
+
+	"encoding/json"
 	//"fmt"
 )
 
-func main() {
-	//testServiceData()
-	
-	go o.SetupServer(":8000", "/")
 
-	var c = o.NewClient("http://localhost:8000")
-	var request1 forms.ServiceRequestForm
-	request1.RequestedService.ServiceDefinitionRequirement = "temp";
-	res := o.ExchangeJson(c, request1)
-	fmt.Println(res);
+
+
+func main() {
+	CONN_PORT := o.ReadFile("CONN_PORT")
+	LISTEN_HANDLE := o.ReadFile("LISTEN_HANDLE")
+	o.InitOrchestrator()
+	go o.SetupServer(CONN_PORT, LISTEN_HANDLE)
+
+	http.HandleFunc("/ServiceRegistry", serviceRegistry)
+    go http.ListenAndServe(":8001", nil)
+
+	var serviceRequestForm forms.ServiceRequestForm
+	serviceRequestForm.RequestedService.MetadataRequirements.AdditionalProp1 = "Icecream"
+	
+	requestor("https://localhost:8000/", serviceRequestForm)
+	
+}
+
+func serviceRegistry(rw http.ResponseWriter, req *http.Request) {
+    body, err := ioutil.ReadAll(req.Body)
+    if err != nil {
+        panic(err)
+    }
+	
+    
+
+    var t interface{}
+    err = json.Unmarshal(body, &t)
+	if err != nil {
+        panic(err)
+    }
+	
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(t) 
 	
 
 }
 
+//Client requestor
+func requestor(url string, struc interface{}) {
+	jsonStr, err := json.Marshal(struc)
+	errorHandler(err)
+    resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonStr))
+	errorHandler(err);
+	defer resp.Body.Close()
+
+	
+	jsonBody, err := ioutil.ReadAll(resp.Body)
+	errorHandler(err)
+	
+	fmt.Println(jsonBody)
+}
+
+func errorHandler(err error){
+	if err != nil {
+		panic(err)
+	}
+}
 /* func testServiceData() {
 
 	//A Request comes from consumer
