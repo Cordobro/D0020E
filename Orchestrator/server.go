@@ -1,20 +1,33 @@
 package Orchestrator
 
 import (
-	"fmt"
-	"log"
-	"net"
-
-	//"os"
-
-	//"strconv"
+	"io/ioutil"
+	"net/http"
 	"encoding/json"
 )
 
-type server struct{	
-    CONN_PORT string
+
+func SetupServer(port string, funcHandle string){
+    http.HandleFunc(funcHandle, Listen)
+    http.ListenAndServe(port, nil)
 }
 
+func Listen(rw http.ResponseWriter, req *http.Request) {
+    body, err := ioutil.ReadAll(req.Body)
+    if err != nil {
+        panic(err)
+    }
+	
+    var t interface{}
+    err = json.Unmarshal(body, &t)
+	if err != nil {
+        panic(err)
+    }
+
+    Respond(rw, t)
+}
+
+/*
 func NewServer(CONN_PORT string) *server{
 	s := server{CONN_PORT: CONN_PORT}
 	return &s
@@ -24,7 +37,12 @@ const (
     CONN_HOST = "localhost"
     CONN_TYPE = "tcp"
 )
-
+*/
+/*
+type server struct{	
+    CONN_PORT string
+}*/
+/*
 func Listen(s *server) {
 
     // Listen for incoming connections.
@@ -42,7 +60,8 @@ func Listen(s *server) {
         go handleRequest(conn)
     }
 }
-
+*/
+/*
 // Handles incoming requests.
 func handleRequest(conn net.Conn) {
 
@@ -65,7 +84,7 @@ func handleRequest(conn net.Conn) {
 
 	Spawn(conn, serviceRequestForm)
 }
-
+*/
 
 func RemoveHeader(fix []byte) []byte{
     if fix[0] == []byte("{")[0]{
@@ -76,14 +95,9 @@ func RemoveHeader(fix []byte) []byte{
 }
 
 
-func Respond(conn net.Conn, responseStruct interface{}){
-    jsonData, err := json.Marshal(responseStruct)
-    errorHandler(err)
-
-    // Send a response back to person contacting us.
-	conn.Write(jsonData)
-	// Close the connection when you're done with it.
-	conn.Close()
+func Respond(rw http.ResponseWriter, responseStruct interface{}){
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(responseStruct) 
 }
 
 

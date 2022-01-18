@@ -18,14 +18,14 @@ func NewRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *reque
 func sendServiceRequest(r *request) {
 
 	serviceRegClient := NewClient(r.serviceRegAdrs)
-	serviceQueryList := ExchangeJson(*serviceRegClient, r.data.Discover.ServiceQueryForm)
+	serviceQueryList := ExchangeJson(serviceRegClient, r.data.Discover.ServiceQueryForm)
 
 	r.data.Discover.ServiceQueryList = serviceQueryList.(forms.ServiceQueryList)
 }
 
 func sendAuthQuery(r *request) {
 	authClient := NewClient(r.authAdrs)
-	intraCloudResult := ExchangeJson(*authClient, r.data.IntraCloudRule)
+	intraCloudResult := ExchangeJson(authClient, r.data.IntraCloudRule)
 	r.data.IntraCloudResult = intraCloudResult.(forms.IntraCloudResult)
 }
 
