@@ -26,12 +26,12 @@ func main() {
 	go o.SetupServer(CONN_PORT, LISTEN_HANDLE)
 
 	http.HandleFunc("/ServiceRegistry", serviceRegistry)
-    go http.ListenAndServe(":8001", nil)
+    go http.ListenAndServe(":8000", nil)
 
 	var serviceRequestForm forms.ServiceRequestForm
 	serviceRequestForm.RequestedService.MetadataRequirements.AdditionalProp1 = "Icecream"
 	
-	requestor("https://localhost:8000/", serviceRequestForm)
+	requestor("http://localhost:8000/", serviceRequestForm)
 	
 }
 
@@ -67,7 +67,7 @@ func requestor(url string, struc interface{}) {
 	jsonBody, err := ioutil.ReadAll(resp.Body)
 	errorHandler(err)
 	
-	fmt.Println(jsonBody)
+	fmt.Println(string(jsonBody))
 }
 
 func errorHandler(err error){
