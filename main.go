@@ -16,6 +16,7 @@ func main() {
 	LISTEN_HANDLE := o.ReadFile("LISTEN_HANDLE")
 	o.InitOrchestrator()
 
+<<<<<<< HEAD
 	/* http.HandleFunc(LISTEN_HANDLE, o.Listen)
 	http.ListenAndServe(CONN_PORT, nil) */
 
@@ -32,6 +33,16 @@ func main() {
 
 			requestor("https://localhost:8000/", serviceRequestForm) */
 
+=======
+	http.HandleFunc("/ServiceRegistry", serviceRegistry)
+    go http.ListenAndServe(":8000", nil)
+
+	var serviceRequestForm forms.ServiceRequestForm
+	serviceRequestForm.RequestedService.MetadataRequirements.AdditionalProp1 = "Icecream"
+	
+	requestor("http://localhost:8000/", serviceRequestForm)
+	
+>>>>>>> 9bfcfc89fe7fc91a2b457fb5c5cb792676fcfde0
 }
 
 /* func serviceRegistry(rw http.ResponseWriter, req *http.Request) {
@@ -65,8 +76,13 @@ func requestor(url string, struc interface{}) {
 
 	jsonBody, err := ioutil.ReadAll(resp.Body)
 	errorHandler(err)
+<<<<<<< HEAD
 
 	fmt.Println(jsonBody)
+=======
+	
+	fmt.Println(string(jsonBody))
+>>>>>>> 9bfcfc89fe7fc91a2b457fb5c5cb792676fcfde0
 }
 */
 
