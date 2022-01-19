@@ -3,6 +3,7 @@ package Orchestrator
 import (
 	forms "arrowhead/Orchestrator/forms"
 	"encoding/json"
+	"fmt"
 	//"encoding/json"
 	//"fmt"
 )
@@ -24,6 +25,11 @@ func NewServiceData(bytevalue []byte) *ServiceData {
 	if err := json.Unmarshal(bytevalue, &request); err != nil {
 		panic(err)
 	}
+
+	fmt.Println("NEW Request:")
+	fmt.Print(request)
+	fmt.Println("____________________")
+	fmt.Println("")
 
 	s := new(ServiceData)
 	s.ServiceRequestForm = request

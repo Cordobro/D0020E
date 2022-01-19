@@ -39,6 +39,8 @@ func Respond(rw http.ResponseWriter, responseStruct interface{}) {
 func SetupServer(port string, funcHandle string) {
 	http.HandleFunc(funcHandle, Listen)
 	http.ListenAndServe(port, nil)
+
+	fmt.Println("Setup Complete")
 }
 
 /*
