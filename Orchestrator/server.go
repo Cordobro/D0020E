@@ -36,17 +36,11 @@ func Respond(rw http.ResponseWriter, responseStruct interface{}) {
 	json.NewEncoder(rw).Encode(responseStruct)
 }
 
-<<<<<<< HEAD
 func SetupServer(port string, funcHandle string) {
 	http.HandleFunc(funcHandle, Listen)
 	http.ListenAndServe(port, nil)
 
 	fmt.Println("Setup Complete")
-=======
-func SetupServer(port string, funcHandle string){ 
-    http.HandleFunc(funcHandle, Listen)
-    //http.ListenAndServe(port, nil) // REMOVE COMMENT LATER
->>>>>>> 9bfcfc89fe7fc91a2b457fb5c5cb792676fcfde0
 }
 
 /*
