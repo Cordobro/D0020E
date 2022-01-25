@@ -2,45 +2,34 @@ package Orchestrator
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
-func Listen(rw http.ResponseWriter, req *http.Request) {
 
-	fmt.Println("Listening...")
 
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		panic(err)
-	}
 
-	t := Spawn(body)
-
-	/* var t interface{}
-	err = json.Unmarshal(body, &t)
-	if err != nil {
-		panic(err)
-	} */
-
-	Respond(rw, t)
+func listen(rw http.ResponseWriter, req *http.Request) {
+    body, err := ioutil.ReadAll(req.Body)
+    if err != nil {
+        panic(err)
+    }
+	
+    t := spawn(body)
+    respond(rw, t)
 }
 
-func Respond(rw http.ResponseWriter, responseStruct interface{}) {
-
-	fmt.Println("Responding: ")
-	fmt.Println(responseStruct)
-
+func respond(rw http.ResponseWriter, responseStruct interface{}){
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(responseStruct)
 }
 
-func SetupServer(port string, funcHandle string) {
-	http.HandleFunc(funcHandle, Listen)
-	http.ListenAndServe(port, nil)
-
-	fmt.Println("Setup Complete")
+func SetupServer(){ 
+    port := readFile("CONN_PORT")
+    funcHandle := readFile("LISTEN_HANDLE")
+    http.HandleFunc(funcHandle, listen)
+    http.ListenAndServe(port, nil) 
 }
 
 /*

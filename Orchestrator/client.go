@@ -16,13 +16,13 @@ type client struct {
 
 
 //Init Client
-func NewClient(httpAdrs string) *client {
+func newClient(httpAdrs string) *client {
 	c := client{httpAdrs: httpAdrs}
 	return &c
 }
 
 
-func ExchangeJson(c *client, struc interface{}) []byte{
+func exchangeJson(c *client, struc interface{}) []byte{
 	jsonStr, err := json.Marshal(struc)
 	errorHandler(err)
     resp, err := http.Post(c.httpAdrs, "application/json", bytes.NewBuffer(jsonStr))

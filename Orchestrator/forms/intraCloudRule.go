@@ -24,7 +24,7 @@ type ProviderIdsWithInterfaceIds struct {
 }
 
 //Only constructs for first element in SRF
-func ConstructIntraCloudRule(srf *ServiceRequestForm, discover *Discover, intraCloudRule *IntraCloudRule) {
+func constructIntraCloudRule(srf *ServiceRequestForm, discover *Discover, intraCloudRule *IntraCloudRule) {
 
 	fmt.Println("---Inside ConstructIntraCloudRule ---")
 	fmt.Println("")

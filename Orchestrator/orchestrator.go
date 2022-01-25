@@ -10,7 +10,7 @@ import (
 var SERVICE_ADDRESS string
 var AUTH_ADDRESS string
 
-func ReadFile(searched string) string {
+func readFile(searched string) string {
 
 	var a string
 
@@ -32,18 +32,18 @@ func ReadFile(searched string) string {
 	return "error, no result"
 }
 
-func InitOrchestrator() {
-	SERVICE_ADDRESS = ReadFile("SERVICE_ADDRESS")
-	AUTH_ADDRESS = ReadFile("AUTH_ADDRESS")
+func InitOrchestrator(){
+	SERVICE_ADDRESS = readFile("SERVICE_ADDRESS")
+	AUTH_ADDRESS = readFile("AUTH_ADDRESS")
 }
 
-func Spawn(data []byte) interface{} {
-	serviceData := NewServiceData(data)
-	r := NewRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
+func spawn(data []byte) interface{}{
+	serviceData := newServiceData(data)
+	r := newRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
 	sendServiceRequest(r)
 	//sendAuthQuery(r)
 	//sendTokenQuery(r)
-	Matchmaker(r)
-
+	matchmaker(r)
+	
 	return r.data.OrchestrationResponse
 }

@@ -33,7 +33,7 @@ type Providers struct {
 	ServiceInterfaces []string  `json:"serviceInterfaces"`
 }
 
-func ConstructTokenRule(srf *ServiceRequestForm) *TokenRule {
+func constructTokenRule(srf *ServiceRequestForm) *TokenRule {
 
 	var tokenRule TokenRule
 
