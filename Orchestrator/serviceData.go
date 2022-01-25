@@ -17,7 +17,7 @@ type ServiceData struct {
 	TokenResult           forms.TokenData
 }
 
-func NewServiceData(bytevalue []byte) *ServiceData {
+func newServiceData(bytevalue []byte) *ServiceData {
 
 	var request forms.ServiceRequestForm
 

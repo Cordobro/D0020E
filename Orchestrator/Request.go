@@ -12,7 +12,7 @@ type request struct {
 	authAdrs       string
 }
 
-func NewRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *request {
+func newRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *request {
 	r := request{data: data,
 		serviceRegAdrs: serviceRegAdrs,
 		authAdrs:       authAdrs}
@@ -21,8 +21,8 @@ func NewRequest(data ServiceData, serviceRegAdrs string, authAdrs string) *reque
 
 func sendServiceRequest(r *request) {
 
-	serviceRegClient := NewClient(r.serviceRegAdrs)
-	serviceQueryListJson := ExchangeJson(serviceRegClient, r.data.Discover.ServiceQueryForm)
+	serviceRegClient := newClient(r.serviceRegAdrs)
+	serviceQueryListJson := exchangeJson(serviceRegClient, r.data.Discover.ServiceQueryForm)
 	var serviceQueryList forms.ServiceQueryList
 	err := json.Unmarshal(serviceQueryListJson, &serviceQueryList)
 	errorHandler(err)
@@ -48,6 +48,6 @@ func sendTokenQuery(r *request) {
 	r.data.TokenResult = tokenResult
 }
 */
-func Matchmaker(r *request) {
+func matchmaker(r *request) {
 	forms.ConstructOrchestrationResponse(&r.data.Discover.ServiceQueryList, &r.data.OrchestrationResponse)
 }

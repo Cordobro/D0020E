@@ -2,17 +2,17 @@ package main
 
 import (
 	o "arrowhead/Orchestrator"
-	"io/ioutil"
+	//"io/ioutil"
 	//"time"
 
 	//"arrowhead/Orchestrator/forms"
-	"bytes"
-	"net/http"
+	//"bytes"
+	//"net/http"
 
-	forms "arrowhead/Orchestrator/forms"
-	"fmt"
+//	forms "arrowhead/Orchestrator/forms"
+	//"fmt"
 
-	"encoding/json"
+	//"encoding/json"
 	//"fmt"
 )
 
@@ -20,21 +20,10 @@ import (
 
 
 func main() {
-	CONN_PORT := o.ReadFile("CONN_PORT")
-	LISTEN_HANDLE := o.ReadFile("LISTEN_HANDLE")
 	o.InitOrchestrator()
-	go o.SetupServer(CONN_PORT, LISTEN_HANDLE)
-
-	http.HandleFunc("/ServiceRegistry", serviceRegistry)
-    go http.ListenAndServe(":8000", nil)
-
-	var serviceRequestForm forms.ServiceRequestForm
-	serviceRequestForm.RequestedService.MetadataRequirements.AdditionalProp1 = "Icecream"
-	
-	requestor("http://localhost:8000/", serviceRequestForm)
-	
+	o.SetupServer()
 }
-
+/*
 func serviceRegistry(rw http.ResponseWriter, req *http.Request) {
     body, err := ioutil.ReadAll(req.Body)
     if err != nil {
@@ -43,18 +32,23 @@ func serviceRegistry(rw http.ResponseWriter, req *http.Request) {
 	
     
 
-    var t interface{}
-    err = json.Unmarshal(body, &t)
+    var srf forms.ServiceRequestForm
+    err = json.Unmarshal(body, &srf)
 	if err != nil {
         panic(err)
     }
-	
+	var str = "YOU GET "+	srf.RequestedService.MetadataRequirements.AdditionalProp1
+	var t forms.ServiceQueryList
+	sqd := new(forms.ServiceQueryData)
+	t.ServiceQueryData = append(t.ServiceQueryData, *sqd)
+	t.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = str
+	fmt.Println("ServiceRegistry Says hello! " + str)
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(t) 
 	
 
-}
-
+}*/
+/*
 //Client requestor
 func requestor(url string, struc interface{}) {
 	jsonStr, err := json.Marshal(struc)
@@ -75,6 +69,7 @@ func errorHandler(err error){
 		panic(err)
 	}
 }
+*/
 /* func testServiceData() {
 
 	//A Request comes from consumer
