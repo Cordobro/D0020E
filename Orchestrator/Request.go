@@ -3,7 +3,6 @@ package Orchestrator
 import (
 	forms "arrowhead/Orchestrator/forms"
 	"encoding/json"
-
 )
 
 type request struct {
@@ -28,6 +27,7 @@ func sendServiceRequest(r *request) {
 	errorHandler(err)
 	r.data.Discover.ServiceQueryList = serviceQueryList
 }
+
 /*
 func sendAuthQuery(r *request) {
 	authClient := NewClient(r.authAdrs)

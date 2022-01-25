@@ -1,6 +1,10 @@
-package testing
+package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
 
 type ServiceQueryList struct {
 	ServiceQueryData []ServiceQueryData `json:"serviceQueryData"`
@@ -46,7 +50,7 @@ type ServiceQueryData struct {
 	UpdatedAt         string            `json:"updatedAt"`
 }
 
-func NewServiceQueryList(size int) *ServiceQueryList {
+func newServiceQueryList(size int) *ServiceQueryList {
 
 	sql := new(ServiceQueryList)
 
@@ -62,4 +66,29 @@ func NewServiceQueryList(size int) *ServiceQueryList {
 	fmt.Println()
 
 	return sql
+}
+
+func listen(rw http.ResponseWriter, req *http.Request) {
+
+	fmt.Println("Received a reuest")
+
+	response := newServiceQueryList(2)
+
+	response.ServiceQueryData[0].Provider.SystemName = "THIS IS A TEST"
+	response.ServiceQueryData[0].Provider.ID = 69
+	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS FKIN WORKS"
+
+	fmt.Println("Sending ServiceQueryList...")
+
+	rw.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(rw).Encode(response)
+
+}
+
+func main() {
+
+	fmt.Println("Starting up...")
+
+	http.HandleFunc("/serviceRegistry", listen)
+	http.ListenAndServe(":8001", nil)
 }

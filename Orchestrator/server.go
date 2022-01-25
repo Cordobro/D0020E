@@ -1,9 +1,10 @@
 package Orchestrator
 
 import (
+	"encoding/json"
+	//"fmt"
 	"io/ioutil"
 	"net/http"
-	"encoding/json"
 )
 
 
@@ -21,7 +22,7 @@ func listen(rw http.ResponseWriter, req *http.Request) {
 
 func respond(rw http.ResponseWriter, responseStruct interface{}){
 	rw.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(rw).Encode(responseStruct) 
+	json.NewEncoder(rw).Encode(responseStruct)
 }
 
 func SetupServer(){ 
@@ -43,7 +44,7 @@ const (
 )
 */
 /*
-type server struct{	
+type server struct{
     CONN_PORT string
 }*/
 /*
@@ -70,25 +71,26 @@ func Listen(s *server) {
 func handleRequest(conn net.Conn) {
 
   // Make a buffer to hold incoming data.
-	buf := make([]byte, 1024)
+	buf := make([]byte, 2048)
   // Read the incoming connection into the buffer.
-
 	_, err := conn.Read(buf)
 	errorHandler(err)
 
-	//data := []byte(strconv.Itoa(reqLen))
-
     var serviceRequestForm interface{}
-
-
-    fmt.Println(string(buf))
+    //fmt.Println(string(buf))
 
     buf = RemoveHeader(buf)
-    fmt.Println(string(buf))
+    buf = RemoveEnd(buf)
+
+    if err := json.Unmarshal(buf, &serviceRequestForm); err != nil {
+        panic(err)
+    }
+    //fmt.Println(serviceRequestForm)
 
 	Spawn(conn, serviceRequestForm)
 }
 */
+
 /*
 func RemoveHeader(fix []byte) []byte{
     if fix[0] == []byte("{")[0]{
@@ -98,10 +100,17 @@ func RemoveHeader(fix []byte) []byte{
     }
 }
 
+func RemoveEnd(fix []byte) []byte{
+    for i := 0; i < len(fix); i++ {
+        if fix[i] == 0 {
+            return fix[0:i]
+        }
+    }
+    return fix
+}
+
 
 
 */
-
-
 
 //https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go

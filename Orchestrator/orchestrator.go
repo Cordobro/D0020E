@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-var	SERVICE_ADDRESS string
-var	AUTH_ADDRESS string
+var SERVICE_ADDRESS string
+var AUTH_ADDRESS string
 
 func readFile(searched string) string {
 

@@ -1,5 +1,5 @@
 SERVICE_ADDRESS http://localhost:8000/serviceRegistry
 AUTH_ADDRESS http://localhost:8002/auth
-CONN_PORT :8000
+CONN_PORT :4245
 LISTEN_HANDLE /Orc
 test http://localhost:8000/Orc
