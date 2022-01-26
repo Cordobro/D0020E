@@ -20,11 +20,13 @@ type service struct {
 	CreatedAt         string `json:"createdAt"`
 	UpdatedAt         string `json:"updatedAt"`
 }
-type metadata struct {
+
+/* type metadata struct {
 	AdditionalProp1 string `json:"additionalProp1"`
 	AdditionalProp2 string `json:"additionalProp2"`
 	AdditionalProp3 string `json:"additionalProp3"`
-}
+} */
+
 type interfaces struct {
 	ID            int    `json:"id"`
 	CreatedAt     string `json:"createdAt"`
@@ -35,12 +37,13 @@ type authorizationTokens struct {
 	InterfaceName1 string `json:"interfaceName1"`
 	InterfaceName2 string `json:"interfaceName2"`
 }
+
 type Response struct {
 	Provider            provider            `json:"provider"`
 	Service             service             `json:"service"`
 	ServiceURI          string              `json:"serviceUri"`
 	Secure              string              `json:"secure"`
-	Metadata            metadata            `json:"metadata"`
+	Metadata            Metadata            `json:"metadata"`
 	Interfaces          []interfaces        `json:"interfaces"`
 	Version             int                 `json:"version"`
 	AuthorizationTokens authorizationTokens `json:"authorizationTokens"`
@@ -57,77 +60,81 @@ func ConstructOrchestrationResponse(sql *ServiceQueryList, oResponse *Orchestrat
 
 	fmt.Println("serviceQueryData length: ", len(serviceQueryData))
 
-	var response Response
+	//Make sures that serviceQueryData isn't empty
 
-	var provider = response.Provider
-	var service = response.Service
-	var metadata = response.Metadata
+	if len(serviceQueryData) > 0 {
 
-	//Provider
-	provider.ID = serviceQueryData[0].Provider.ID
-	provider.SystemName = serviceQueryData[0].Provider.SystemName
-	provider.Address = serviceQueryData[0].Provider.Address
-	provider.Port = serviceQueryData[0].Provider.Port
-	provider.AuthenticationInfo = serviceQueryData[0].Provider.AuthenticationInfo
-	provider.CreatedAt = serviceQueryData[0].Provider.CreatedAt
-	provider.UpdatedAt = serviceQueryData[0].Provider.UpdatedAt
+		var response Response
 
-	response.Provider = provider
+		var provider = response.Provider
+		var service = response.Service
+		var metadata = response.Metadata
 
-	//Service
-	service.ID = serviceQueryData[0].ServiceDefinition.ID
-	service.ServiceDefinition = serviceQueryData[0].ServiceDefinition.ServiceDefinition
-	service.CreatedAt = serviceQueryData[0].ServiceDefinition.CreatedAt
-	service.UpdatedAt = serviceQueryData[0].ServiceDefinition.UpdatedAt
+		//Provider
+		provider.ID = serviceQueryData[0].Provider.ID
+		provider.SystemName = serviceQueryData[0].Provider.SystemName
+		provider.Address = serviceQueryData[0].Provider.Address
+		provider.Port = serviceQueryData[0].Provider.Port
+		provider.AuthenticationInfo = serviceQueryData[0].Provider.AuthenticationInfo
+		provider.CreatedAt = serviceQueryData[0].Provider.CreatedAt
+		provider.UpdatedAt = serviceQueryData[0].Provider.UpdatedAt
 
-	response.Service = service
+		response.Provider = provider
 
-	//serviceURI
-	response.ServiceURI = serviceQueryData[0].ServiceURI
+		//Service
+		service.ID = serviceQueryData[0].ServiceDefinition.ID
+		service.ServiceDefinition = serviceQueryData[0].ServiceDefinition.ServiceDefinition
+		service.CreatedAt = serviceQueryData[0].ServiceDefinition.CreatedAt
+		service.UpdatedAt = serviceQueryData[0].ServiceDefinition.UpdatedAt
 
-	//secure
-	response.Secure = serviceQueryData[0].Secure
+		response.Service = service
 
-	//metadata
-	metadata.AdditionalProp1 = serviceQueryData[0].Metadata.AdditionalProp1
-	metadata.AdditionalProp2 = serviceQueryData[0].Metadata.AdditionalProp2
-	metadata.AdditionalProp3 = serviceQueryData[0].Metadata.AdditionalProp3
+		//serviceURI
+		response.ServiceURI = serviceQueryData[0].ServiceURI
 
-	response.Metadata = metadata
+		//secure
+		response.Secure = serviceQueryData[0].Secure
 
-	fmt.Println("Response")
-	fmt.Println(response)
-	fmt.Println("")
+		//metadata
+		metadata = serviceQueryData[0].Metadata
 
-	//interfaces
+		response.Metadata = metadata
 
-	var ifList []interfaces
+		fmt.Println("Response")
+		fmt.Println(response)
+		fmt.Println("")
 
-	for i := 0; i < len(serviceQueryData[0].Interfaces); i++ {
+		//interfaces
 
-		var interf interfaces
+		var ifList []interfaces
 
-		interf.ID = serviceQueryData[0].Interfaces[i].ID
-		interf.InterfaceName = serviceQueryData[0].Interfaces[i].InterfaceName
-		interf.CreatedAt = serviceQueryData[0].Interfaces[i].CreatedAt
-		interf.UpdatedAt = serviceQueryData[0].Interfaces[i].UpdatedAt
+		for i := 0; i < len(serviceQueryData[0].Interfaces); i++ {
 
-		ifList = append(ifList, interf)
+			var interf interfaces
+
+			interf.ID = serviceQueryData[0].Interfaces[i].ID
+			interf.InterfaceName = serviceQueryData[0].Interfaces[i].InterfaceName
+			interf.CreatedAt = serviceQueryData[0].Interfaces[i].CreatedAt
+			interf.UpdatedAt = serviceQueryData[0].Interfaces[i].UpdatedAt
+
+			ifList = append(ifList, interf)
+		}
+
+		response.Interfaces = ifList
+
+		//version
+		response.Version = serviceQueryData[0].Version
+
+		//autorizationTokens
+		//Where do we get these?
+		//response.AuthorizationTokens.InterfaceName1 = serviceQueryData[0].Interfaces[0].InterfaceName
+		//response.AuthorizationTokens.InterfaceName2 = serviceQueryData[0].Interfaces[1].InterfaceName
+
+		//warnings
+		//no warnings yet
+
+		oResponse.Response = append(oResponse.Response, response)
+
 	}
-
-	response.Interfaces = ifList
-
-	//version
-	response.Version = serviceQueryData[0].Version
-
-	//autorizationTokens
-	//Where do we get these?
-	//response.AuthorizationTokens.InterfaceName1 = serviceQueryData[0].Interfaces[0].InterfaceName
-	//response.AuthorizationTokens.InterfaceName2 = serviceQueryData[0].Interfaces[1].InterfaceName
-
-	//warnings
-	//no warnings yet
-
-	oResponse.Response = append(oResponse.Response, response)
 
 }

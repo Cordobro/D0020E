@@ -8,19 +8,21 @@ type Discover struct {
 }
 
 type ServiceQueryForm struct {
-	ServiceDefinitionRequirement string   `json:"serviceDefinitionRequirement"`
-	InterfaceRequirements        []string `json:"interfaceRequirements"`
-	SecurityRequirements         []string `json:"securityRequirements"`
-	MetadataRequirements         struct {
-		AdditionalProp1 string `json:"additionalProp1"`
-		AdditionalProp2 string `json:"additionalProp2"`
-		AdditionalProp3 string `json:"additionalProp3"`
-	} `json:"metadataRequirements"`
-	VersionRequirement    int  `json:"versionRequirement"`
-	MaxVersionRequirement int  `json:"maxVersionRequirement"`
-	MinVersionRequirement int  `json:"minVersionRequirement"`
-	PingProviders         bool `json:"pingProviders"`
+	ServiceDefinitionRequirement string               `json:"serviceDefinitionRequirement"`
+	InterfaceRequirements        []string             `json:"interfaceRequirements"`
+	SecurityRequirements         []string             `json:"securityRequirements"`
+	MetadataRequirements         MetadataRequirements `json:"metadataRequirements"`
+	VersionRequirement           int                  `json:"versionRequirement"`
+	MaxVersionRequirement        int                  `json:"maxVersionRequirement"`
+	MinVersionRequirement        int                  `json:"minVersionRequirement"`
+	PingProviders                bool                 `json:"pingProviders"`
 }
+
+/* type MetadataRequirements struct {
+	AdditionalProp1 string `json:"additionalProp1"`
+	AdditionalProp2 string `json:"additionalProp2"`
+	AdditionalProp3 string `json:"additionalProp3"`
+} */
 
 /********************* ServiceQueryList ************************/
 
@@ -43,11 +45,13 @@ type Provider struct {
 	CreatedAt          string `json:"createdAt"`
 	UpdatedAt          string `json:"updatedAt"`
 }
-type Metadata struct {
+
+/* type Metadata struct {
 	AdditionalProp1 string `json:"additionalProp1"`
 	AdditionalProp2 string `json:"additionalProp2"`
 	AdditionalProp3 string `json:"additionalProp3"`
-}
+} */
+
 type Interfaces struct {
 	ID            int    `json:"id"`
 	InterfaceName string `json:"interfaceName"`
@@ -68,7 +72,7 @@ type ServiceQueryData struct {
 	UpdatedAt         string            `json:"updatedAt"`
 }
 
-func ConstructServiceQueryForm(srf *ServiceRequestForm, serviceQueryForm *ServiceQueryForm){
+func ConstructServiceQueryForm(srf *ServiceRequestForm, serviceQueryForm *ServiceQueryForm) {
 
 	var requestedService = srf.RequestedService
 
