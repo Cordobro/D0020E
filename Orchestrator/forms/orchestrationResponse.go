@@ -43,7 +43,7 @@ type Response struct {
 	Service             service             `json:"service"`
 	ServiceURI          string              `json:"serviceUri"`
 	Secure              string              `json:"secure"`
-	Metadata            Metadata            `json:"metadata"`
+	Metadata            []string            `json:"metadata"`
 	Interfaces          []interfaces        `json:"interfaces"`
 	Version             int                 `json:"version"`
 	AuthorizationTokens authorizationTokens `json:"authorizationTokens"`
@@ -60,11 +60,11 @@ func ConstructOrchestrationResponse(sql *ServiceQueryList, oResponse *Orchestrat
 
 	fmt.Println("serviceQueryData length: ", len(serviceQueryData))
 
+	var response Response
+
 	//Make sures that serviceQueryData isn't empty
 
 	if len(serviceQueryData) > 0 {
-
-		var response Response
 
 		var provider = response.Provider
 		var service = response.Service
@@ -133,8 +133,8 @@ func ConstructOrchestrationResponse(sql *ServiceQueryList, oResponse *Orchestrat
 		//warnings
 		//no warnings yet
 
-		oResponse.Response = append(oResponse.Response, response)
-
 	}
+
+	oResponse.Response = append(oResponse.Response, response)
 
 }

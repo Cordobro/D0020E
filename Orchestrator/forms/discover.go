@@ -8,14 +8,14 @@ type Discover struct {
 }
 
 type ServiceQueryForm struct {
-	ServiceDefinitionRequirement string               `json:"serviceDefinitionRequirement"`
-	InterfaceRequirements        []string             `json:"interfaceRequirements"`
-	SecurityRequirements         []string             `json:"securityRequirements"`
-	MetadataRequirements         MetadataRequirements `json:"metadataRequirements"`
-	VersionRequirement           int                  `json:"versionRequirement"`
-	MaxVersionRequirement        int                  `json:"maxVersionRequirement"`
-	MinVersionRequirement        int                  `json:"minVersionRequirement"`
-	PingProviders                bool                 `json:"pingProviders"`
+	ServiceDefinitionRequirement string   `json:"serviceDefinitionRequirement"`
+	InterfaceRequirements        []string `json:"interfaceRequirements"`
+	SecurityRequirements         []string `json:"securityRequirements"`
+	MetadataRequirements         []string `json:"metadataRequirements"`
+	VersionRequirement           int      `json:"versionRequirement"`
+	MaxVersionRequirement        int      `json:"maxVersionRequirement"`
+	MinVersionRequirement        int      `json:"minVersionRequirement"`
+	PingProviders                bool     `json:"pingProviders"`
 }
 
 /* type MetadataRequirements struct {
@@ -65,7 +65,7 @@ type ServiceQueryData struct {
 	ServiceURI        string            `json:"serviceUri"`
 	EndOfValidity     string            `json:"endOfValidity"`
 	Secure            string            `json:"secure"`
-	Metadata          Metadata          `json:"metadata"`
+	Metadata          []string          `json:"metadata"`
 	Version           int               `json:"version"`
 	Interfaces        []Interfaces      `json:"interfaces"`
 	CreatedAt         string            `json:"createdAt"`

@@ -20,13 +20,13 @@ type RequesterSystem struct {
 } */
 
 type RequestedService struct {
-	ServiceDefinitionRequirement string               `json:"serviceDefinitionRequirement"`
-	InterfaceRequirements        []string             `json:"interfaceRequirements"`
-	SecurityRequirements         []string             `json:"securityRequirements"`
-	MetadataRequirements         MetadataRequirements `json:"metadataRequirements"`
-	VersionRequirement           int                  `json:"versionRequirement"`
-	MaxVersionRequirement        int                  `json:"maxVersionRequirement"`
-	MinVersionRequirement        int                  `json:"minVersionRequirement"`
+	ServiceDefinitionRequirement string   `json:"serviceDefinitionRequirement"`
+	InterfaceRequirements        []string `json:"interfaceRequirements"`
+	SecurityRequirements         []string `json:"securityRequirements"`
+	MetadataRequirements         []string `json:"metadataRequirements"`
+	VersionRequirement           int      `json:"versionRequirement"`
+	MaxVersionRequirement        int      `json:"maxVersionRequirement"`
+	MinVersionRequirement        int      `json:"minVersionRequirement"`
 }
 
 type ProviderCloud struct {
