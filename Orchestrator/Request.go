@@ -85,7 +85,7 @@ func matchmaker(r *request) {
 		//Find the best index (most matches)
 
 		for i := 0; i < len(templist); i++ {
-			if len(templist[i]) > bestIndex {
+			if len(templist[i]) > len(templist[bestIndex]) {
 				bestIndex = i
 			}
 		}
