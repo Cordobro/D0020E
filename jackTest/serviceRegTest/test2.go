@@ -132,8 +132,8 @@ func constructReturnMessage(sqf ServiceQueryForm) *ServiceQueryList {
 	response := newServiceQueryList(2)
 
 	response.ServiceQueryData[0].Provider.SystemName = "THIS IS A TEST"
-	response.ServiceQueryData[0].Provider.ID = 69
-	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS FKIN WORKS"
+	response.ServiceQueryData[0].Provider.ID = 690
+	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS WORKS"
 
 	for i := 0; i < len(response.ServiceQueryData); i++ {
 		response.ServiceQueryData[i].Metadata = sqf.MetadataRequirements
