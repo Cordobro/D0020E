@@ -100,7 +100,7 @@ func ConstructServiceQueryForm(srf *ServiceRequestForm, serviceQueryForm *Servic
 	//PingProviders
 	serviceQueryForm.PingProviders = true
 
-	fmt.Println("---Inside ConstructServiceQueryForm---")
+	fmt.Println("---Construct ServiceQueryForm---")
 	fmt.Println("")
 	fmt.Println(serviceQueryForm)
 	fmt.Println("")

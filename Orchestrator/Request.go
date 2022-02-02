@@ -49,9 +49,15 @@ func sendTokenQuery(r *request) {
 	r.data.TokenResult = tokenResult
 }
 */
+
 func matchmaker(r *request) {
 
 	var sql = r.data.Discover.ServiceQueryList
+
+	fmt.Println("---Received ServiceQueryList---")
+	fmt.Println("")
+	fmt.Println(sql)
+	fmt.Println("")
 
 	matchmade := new(forms.Discover)
 
@@ -66,12 +72,6 @@ func matchmaker(r *request) {
 		var requirements = r.data.ServiceRequestForm.RequestedService.MetadataRequirements
 		var templist [][]string
 		var bestIndex int
-
-		for i := 0; i < len(sql.ServiceQueryData); i++ {
-			fmt.Println("METADATA: ", i)
-			fmt.Println(sql.ServiceQueryData[i].Metadata)
-			fmt.Println("")
-		}
 
 		//Run intersection on all indexes and save result in tempList
 
@@ -90,12 +90,7 @@ func matchmaker(r *request) {
 			}
 		}
 
-		fmt.Println("BEST INDEX: ", bestIndex)
-
 		temp := sql.ServiceQueryData[bestIndex]
-
-		fmt.Println("TEMP :")
-		fmt.Println(temp)
 
 		matchmade.ServiceQueryList.ServiceQueryData = append(matchmade.ServiceQueryList.ServiceQueryData, temp)
 

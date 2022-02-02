@@ -32,18 +32,18 @@ func readFile(searched string) string {
 	return "error, no result"
 }
 
-func InitOrchestrator(){
+func InitOrchestrator() {
 	SERVICE_ADDRESS = readFile("SERVICE_ADDRESS")
 	AUTH_ADDRESS = readFile("AUTH_ADDRESS")
 }
 
-func spawn(data []byte) interface{}{
+func spawn(data []byte) interface{} {
 	serviceData := newServiceData(data)
 	r := newRequest(*serviceData, SERVICE_ADDRESS, AUTH_ADDRESS)
 	sendServiceRequest(r)
 	//sendAuthQuery(r)
 	//sendTokenQuery(r)
 	matchmaker(r)
-	
+
 	return r.data.OrchestrationResponse
 }

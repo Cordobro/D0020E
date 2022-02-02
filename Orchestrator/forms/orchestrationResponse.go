@@ -54,11 +54,9 @@ type Response struct {
 
 func ConstructOrchestrationResponse(sql *ServiceQueryList, oResponse *OrchestrationResponse) {
 
-	fmt.Println("---Inside OrchestrationResponse ---")
+	fmt.Println("---Construct OrchestrationResponse ---")
 
 	var serviceQueryData = sql.ServiceQueryData
-
-	fmt.Println("serviceQueryData length: ", len(serviceQueryData))
 
 	var response Response
 
@@ -100,7 +98,6 @@ func ConstructOrchestrationResponse(sql *ServiceQueryList, oResponse *Orchestrat
 
 		response.Metadata = metadata
 
-		fmt.Println("Response")
 		fmt.Println(response)
 		fmt.Println("")
 

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 )
 
 type ServiceRequestForm struct {
@@ -42,6 +41,8 @@ type ServiceRequestForm struct {
 		AdditionalProp3 bool `json:"additionalProp3"`
 	} `json:"orchestrationFlags"`
 }
+
+// Response
 
 type OrchestrationResponse struct {
 	Response []Response `json:"response"`
@@ -102,9 +103,8 @@ func main() {
 	count = 0
 
 	// Taking input from user
-	fmt.Println("How many forms do you want to send?: ")
-	var amount int
-	fmt.Scanln(&amount)
+	fmt.Println("Sending a ServiceRequestForm...")
+	var amount int = 1
 
 	c := NewClient("http://localhost:4000/Orc")
 
@@ -113,20 +113,10 @@ func main() {
 	for i := 0; i < amount; i++ {
 
 		srf := new(ServiceRequestForm)
-		srf.RequesterSystem.SystemName = "LOOK AT PORT DIFFERENCE"
-		srf.RequesterSystem.Port = i
 
-		var metaList []string
-
-		counts := strconv.Itoa(count)
-
-		metaList = append(metaList, "META", counts)
-
-		if i%3 == 0 {
-			metaList = append(metaList, "%3")
-		}
-
-		srf.RequestedService.MetadataRequirements = append(srf.RequestedService.MetadataRequirements, metaList...)
+		fmt.Println("Form: ")
+		fmt.Println(srf)
+		fmt.Println()
 
 		result := ExchangeJson(c, srf)
 
@@ -145,15 +135,9 @@ func main() {
 
 	for i := 0; i < len(responseList); i++ {
 		fmt.Println("Response #", i+1)
-		fmt.Print(responseList[i])
-		fmt.Println("____________________")
+		fmt.Println(responseList[i])
 		fmt.Println("")
 	}
-
-	fmt.Println("Response FIRST ARRIVED")
-	fmt.Print(responseList[0])
-	fmt.Println("____________________")
-	fmt.Println("")
 }
 
 func ExchangeJson(c *client, srf *ServiceRequestForm) []byte {

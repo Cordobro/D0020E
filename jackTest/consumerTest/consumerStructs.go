@@ -1,13 +1,4 @@
-package main
-
-import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-	"strconv"
-)
+package consumertest
 
 type ServiceRequestForm struct {
 	RequesterSystem struct {
@@ -42,6 +33,8 @@ type ServiceRequestForm struct {
 		AdditionalProp3 bool `json:"additionalProp3"`
 	} `json:"orchestrationFlags"`
 }
+
+// Response
 
 type OrchestrationResponse struct {
 	Response []Response `json:"response"`
@@ -82,97 +75,4 @@ type Response struct {
 	Version             int                 `json:"version"`
 	AuthorizationTokens authorizationTokens `json:"authorizationTokens"`
 	Warnings            []string            `json:"warnings"`
-}
-
-var count int
-
-//Client struct
-type client struct {
-	httpAdrs string
-}
-
-//Init Client
-func NewClient(httpAdrs string) *client {
-	c := client{httpAdrs: httpAdrs}
-	return &c
-}
-
-func main() {
-
-	count = 0
-
-	// Taking input from user
-	fmt.Println("How many forms do you want to send?: ")
-	var amount int
-	fmt.Scanln(&amount)
-
-	c := NewClient("http://localhost:4000/Orc")
-
-	var responseList []OrchestrationResponse
-
-	for i := 0; i < amount; i++ {
-
-		srf := new(ServiceRequestForm)
-		srf.RequesterSystem.SystemName = "LOOK AT PORT DIFFERENCE"
-		srf.RequesterSystem.Port = i
-
-		var metaList []string
-
-		counts := strconv.Itoa(count)
-
-		metaList = append(metaList, "META", counts)
-
-		if i%3 == 0 {
-			metaList = append(metaList, "%3")
-		}
-
-		srf.RequestedService.MetadataRequirements = append(srf.RequestedService.MetadataRequirements, metaList...)
-
-		result := ExchangeJson(c, srf)
-
-		var response OrchestrationResponse
-
-		if err := json.Unmarshal(result, &response); err != nil {
-			panic(err)
-		}
-
-		responseList = append(responseList, response)
-
-		count++
-	}
-
-	//Print responseList
-
-	for i := 0; i < len(responseList); i++ {
-		fmt.Println("Response #", i+1)
-		fmt.Print(responseList[i])
-		fmt.Println("____________________")
-		fmt.Println("")
-	}
-
-	fmt.Println("Response FIRST ARRIVED")
-	fmt.Print(responseList[0])
-	fmt.Println("____________________")
-	fmt.Println("")
-}
-
-func ExchangeJson(c *client, srf *ServiceRequestForm) []byte {
-
-	jsonStr, err := json.Marshal(srf)
-	errorHandler(err)
-
-	resp, err := http.Post(c.httpAdrs, "application/json", bytes.NewBuffer(jsonStr))
-	errorHandler(err)
-	defer resp.Body.Close()
-
-	jsonBody, err := ioutil.ReadAll(resp.Body)
-	errorHandler(err)
-
-	return jsonBody
-}
-
-func errorHandler(err error) {
-	if err != nil {
-		panic(err)
-	}
 }

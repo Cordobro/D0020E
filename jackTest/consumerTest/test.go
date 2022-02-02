@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 )
 
 type ServiceRequestForm struct {
@@ -21,9 +20,9 @@ type ServiceRequestForm struct {
 		InterfaceRequirements        []string `json:"interfaceRequirements"`
 		SecurityRequirements         []string `json:"securityRequirements"`
 		MetadataRequirements         []string `json:"metadataRequirements"`
-		VersionRequirement           int      `json:"versionRequirement"`
-		MaxVersionRequirement        int      `json:"maxVersionRequirement"`
-		MinVersionRequirement        int      `json:"minVersionRequirement"`
+		VersionRequirement    int `json:"versionRequirement"`
+		MaxVersionRequirement int `json:"maxVersionRequirement"`
+		MinVersionRequirement int `json:"minVersionRequirement"`
 	} `json:"requestedService"`
 	PreferredProviders []struct {
 		ProviderCloud struct {
@@ -61,7 +60,11 @@ type service struct {
 	CreatedAt         string `json:"createdAt"`
 	UpdatedAt         string `json:"updatedAt"`
 }
-
+type metadata struct {
+	AdditionalProp1 string `json:"additionalProp1"`
+	AdditionalProp2 string `json:"additionalProp2"`
+	AdditionalProp3 string `json:"additionalProp3"`
+}
 type interfaces struct {
 	ID            int    `json:"id"`
 	CreatedAt     string `json:"createdAt"`
@@ -84,8 +87,6 @@ type Response struct {
 	Warnings            []string            `json:"warnings"`
 }
 
-var count int
-
 //Client struct
 type client struct {
 	httpAdrs string
@@ -99,46 +100,31 @@ func NewClient(httpAdrs string) *client {
 
 func main() {
 
-	count = 0
-
 	// Taking input from user
 	fmt.Println("How many forms do you want to send?: ")
 	var amount int
-	fmt.Scanln(&amount)
+	//fmt.Scanln(&amount)
+	amount = 1
 
-	c := NewClient("http://localhost:4000/Orc")
+	c := NewClient("http://localhost:4246/Orc")
 
 	var responseList []OrchestrationResponse
 
 	for i := 0; i < amount; i++ {
 
 		srf := new(ServiceRequestForm)
-		srf.RequesterSystem.SystemName = "LOOK AT PORT DIFFERENCE"
-		srf.RequesterSystem.Port = i
-
-		var metaList []string
-
-		counts := strconv.Itoa(count)
-
-		metaList = append(metaList, "META", counts)
-
-		if i%3 == 0 {
-			metaList = append(metaList, "%3")
-		}
-
-		srf.RequestedService.MetadataRequirements = append(srf.RequestedService.MetadataRequirements, metaList...)
+		srf.RequestedService.ServiceDefinitionRequirement = "serviceDef1"
+		
 
 		result := ExchangeJson(c, srf)
 
 		var response OrchestrationResponse
-
+		fmt.Println(string(result))
 		if err := json.Unmarshal(result, &response); err != nil {
 			panic(err)
 		}
 
 		responseList = append(responseList, response)
-
-		count++
 	}
 
 	//Print responseList

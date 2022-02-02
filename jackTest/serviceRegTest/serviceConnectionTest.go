@@ -62,6 +62,7 @@ type ServiceQueryForm struct {
 /*************************************************************************************/
 
 var count int
+var listSize int
 
 func newServiceQueryList(size int) *ServiceQueryList {
 
@@ -71,12 +72,6 @@ func newServiceQueryList(size int) *ServiceQueryList {
 		sqd := new(ServiceQueryData)
 		sql.ServiceQueryData = append(sql.ServiceQueryData, *sqd)
 	}
-
-	fmt.Println()
-	fmt.Println("---NewServiceQueryList---")
-	fmt.Println()
-	fmt.Println("ServiceQueryData Size: ", len(sql.ServiceQueryData))
-	fmt.Println()
 
 	return sql
 }
@@ -91,30 +86,15 @@ func listen(rw http.ResponseWriter, req *http.Request) {
 
 	var sqf = parseMSG(req)
 
-	fmt.Println("SQF:\n ", sqf)
+	fmt.Println("Received message:\n ", sqf)
 
 	//create response
 
 	var response = constructReturnMessage(sqf)
 
-	//Metadata
-
-	var metaList []string
-	metaList = append(metaList, "META")
-	response.ServiceQueryData[0].Metadata = metaList
-	response.ServiceQueryData[1].Metadata = metaList
-
-	var metaList2 []string
-	metaList2 = append(metaList2, "META", "0", "%3")
-	response.ServiceQueryData[2].Metadata = metaList2
-
-	metaList = append(metaList, "0")
-	response.ServiceQueryData[3].Metadata = metaList2
-	response.ServiceQueryData[4].Metadata = metaList
-
 	//Respond
 
-	fmt.Println("Sending ServiceQueryList...")
+	fmt.Println("Sending response...\n", response)
 
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(response)
@@ -127,8 +107,6 @@ func parseMSG(req *http.Request) ServiceQueryForm {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("Body:\n ", string(body))
 
 	var request ServiceQueryForm
 
@@ -144,13 +122,7 @@ func parseMSG(req *http.Request) ServiceQueryForm {
 
 func constructReturnMessage(sqf ServiceQueryForm) *ServiceQueryList {
 
-	response := newServiceQueryList(5)
-
-	response.ServiceQueryData[0].Provider.SystemName = "THIS IS A TEST"
-	response.ServiceQueryData[0].Provider.ID = 404
-	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS WORKS"
-
-	response.ServiceQueryData[0].Version = count
+	response := newServiceQueryList(listSize)
 
 	return response
 }
@@ -158,8 +130,9 @@ func constructReturnMessage(sqf ServiceQueryForm) *ServiceQueryList {
 func main() {
 
 	count = 0
+	listSize = 1
 
-	fmt.Println("Starting up...")
+	fmt.Println("Waiting for a request...")
 
 	http.HandleFunc("/serviceRegistry", listen)
 	http.ListenAndServe(":8000", nil)

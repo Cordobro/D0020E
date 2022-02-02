@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 /******************************************* STRUCTS ******************************************/
@@ -62,6 +63,8 @@ type ServiceQueryForm struct {
 /*************************************************************************************/
 
 var count int
+var listSize int
+var database []ServiceQueryData
 
 func newServiceQueryList(size int) *ServiceQueryList {
 
@@ -72,12 +75,6 @@ func newServiceQueryList(size int) *ServiceQueryList {
 		sql.ServiceQueryData = append(sql.ServiceQueryData, *sqd)
 	}
 
-	fmt.Println()
-	fmt.Println("---NewServiceQueryList---")
-	fmt.Println()
-	fmt.Println("ServiceQueryData Size: ", len(sql.ServiceQueryData))
-	fmt.Println()
-
 	return sql
 }
 
@@ -85,40 +82,31 @@ func listen(rw http.ResponseWriter, req *http.Request) {
 
 	fmt.Println("Received a request")
 
-	count++
-
 	//Unmarshal the request
 
 	var sqf = parseMSG(req)
 
-	fmt.Println("SQF:\n ", sqf)
+	fmt.Println("Received message:\n ", sqf)
 
 	//create response
 
 	var response = constructReturnMessage(sqf)
+	response.ServiceQueryData = database
 
-	//Metadata
-
-	var metaList []string
-	metaList = append(metaList, "META")
-	response.ServiceQueryData[0].Metadata = metaList
-	response.ServiceQueryData[1].Metadata = metaList
-
-	var metaList2 []string
-	metaList2 = append(metaList2, "META", "0", "%3")
-	response.ServiceQueryData[2].Metadata = metaList2
-
-	metaList = append(metaList, "0")
-	response.ServiceQueryData[3].Metadata = metaList2
-	response.ServiceQueryData[4].Metadata = metaList
+	for i := 0; i < len(response.ServiceQueryData); i++ {
+		countString := strconv.Itoa(count)
+		response.ServiceQueryData[i].Provider.SystemName = countString
+		count++
+	}
 
 	//Respond
 
-	fmt.Println("Sending ServiceQueryList...")
+	fmt.Println("Sending response...\n", response)
 
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(response)
 
+	fmt.Println()
 }
 
 func parseMSG(req *http.Request) ServiceQueryForm {
@@ -127,8 +115,6 @@ func parseMSG(req *http.Request) ServiceQueryForm {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("Body:\n ", string(body))
 
 	var request ServiceQueryForm
 
@@ -144,22 +130,68 @@ func parseMSG(req *http.Request) ServiceQueryForm {
 
 func constructReturnMessage(sqf ServiceQueryForm) *ServiceQueryList {
 
-	response := newServiceQueryList(5)
-
-	response.ServiceQueryData[0].Provider.SystemName = "THIS IS A TEST"
-	response.ServiceQueryData[0].Provider.ID = 404
-	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS WORKS"
-
-	response.ServiceQueryData[0].Version = count
+	response := newServiceQueryList(listSize)
 
 	return response
+}
+
+func setupDB(size int) {
+
+	fmt.Println("Setting up Database...")
+
+	for i := 0; i < size; i++ {
+		sqd := new(ServiceQueryData)
+		database = append(database, *sqd)
+	}
+
+}
+
+func fillDB() {
+	for i := 0; i < len(database); i++ {
+		database[i].ServiceDefinition.ServiceDefinition = "Temp"
+		database[i].ServiceDefinition.ID = 0 + i
+	}
+}
+
+func printDB() {
+	for i := 0; i < len(database); i++ {
+		fmt.Println("")
+		fmt.Println("Index: ", i)
+		fmt.Println("ServiceDefinition: ", database[i].ServiceDefinition.ServiceDefinition)
+		fmt.Println("ID: ", database[i].ServiceDefinition.ID)
+		fmt.Print("Metadata: ", database[i].Metadata)
+		fmt.Println("")
+
+	}
+}
+
+func addMetaData() {
+
+	database[0].Metadata = append(database[0].Metadata, "Fahrenheit")
+	database[0].Metadata = append(database[0].Metadata, "Sundsvall")
+
+	database[1].Metadata = append(database[1].Metadata, "Celsius")
+	database[1].Metadata = append(database[1].Metadata, "Luleå")
+	database[1].Metadata = append(database[1].Metadata, "Today")
+
+	database[2].Metadata = append(database[2].Metadata, "Celsius")
+	database[2].Metadata = append(database[2].Metadata, "Today")
+	database[2].Metadata = append(database[2].Metadata, "Stockholm")
+
 }
 
 func main() {
 
 	count = 0
+	listSize = 3
 
-	fmt.Println("Starting up...")
+	setupDB(3)
+	fillDB()
+	addMetaData()
+	printDB()
+
+	fmt.Println("")
+	fmt.Println("Waiting for a request...")
 
 	http.HandleFunc("/serviceRegistry", listen)
 	http.ListenAndServe(":8000", nil)

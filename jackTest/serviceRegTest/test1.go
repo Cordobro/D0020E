@@ -78,7 +78,7 @@ func listen(rw http.ResponseWriter, req *http.Request) {
 
 	response.ServiceQueryData[0].Provider.SystemName = "THIS IS A TEST"
 	response.ServiceQueryData[0].Provider.ID = 69
-	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS WORKS"
+	response.ServiceQueryData[0].ServiceDefinition.ServiceDefinition = "THIS FKIN WORKS"
 
 	fmt.Println("Sending ServiceQueryList...")
 
