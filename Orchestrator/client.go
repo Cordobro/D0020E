@@ -42,24 +42,3 @@ func errorHandler(err error) {
 		panic(err)
 	}
 }
-
-//OLD
-/*func ExchangeJson(c client, struc interface{}) interface{}{
-
-	jsonStr, err := json.Marshal(struc)
-	errorHandler(err)
-
-	resp, err := http.Post(c.httpAdrs, "application/json", bytes.NewBuffer(jsonStr))
-	errorHandler(err)
-
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	errorHandler(err)
-
-	jsonData := []byte(body)
-	var result interface{}
-
-	unmarshallerr := json.Unmarshal(jsonData, result)
-	errorHandler(unmarshallerr)
-	return result
-}*/

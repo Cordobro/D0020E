@@ -4,6 +4,7 @@ import (
 	forms "arrowhead/Orchestrator/forms"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 type request struct {
@@ -69,9 +70,12 @@ func matchmaker(r *request) {
 
 	} else {
 
+		var definition = r.data.ServiceRequestForm.RequestedService.ServiceDefinitionRequirement
 		var requirements = r.data.ServiceRequestForm.RequestedService.MetadataRequirements
+
 		var templist [][]string
 		var bestIndex int
+		var bestDef string = sql.ServiceQueryData[0].ServiceDefinition.ServiceDefinition
 
 		//Run intersection on all indexes and save result in tempList
 
@@ -82,12 +86,34 @@ func matchmaker(r *request) {
 
 		}
 
-		//Find the best index (most matches)
+		//Find the best index (most metaData matches and with the matching serviceDefinition)
 
 		for i := 0; i < len(templist); i++ {
-			if len(templist[i]) > len(templist[bestIndex]) {
-				bestIndex = i
+
+			//Definition of current index
+			var currentDef string = sql.ServiceQueryData[i].ServiceDefinition.ServiceDefinition
+
+			if !strings.EqualFold(bestDef, definition) {
+
+				if len(templist[i]) > len(templist[bestIndex]) {
+					bestIndex = i
+					bestDef = currentDef
+
+				} else if strings.EqualFold(currentDef, definition) {
+					bestIndex = i
+					bestDef = currentDef
+				}
+
 			}
+
+			if strings.EqualFold(bestDef, definition) {
+
+				if len(templist[i]) > len(templist[bestIndex]) && strings.EqualFold(currentDef, definition) {
+					bestIndex = i
+					bestDef = currentDef
+				}
+			}
+
 		}
 
 		temp := sql.ServiceQueryData[bestIndex]
@@ -102,23 +128,29 @@ func matchmaker(r *request) {
 //https://stackoverflow.com/questions/44956031/how-to-get-intersection-of-two-slice-in-golang
 
 func intersection(s1, s2 []string) (inter []string) {
+
 	hash := make(map[string]bool)
+
 	for _, e := range s1 {
-		hash[e] = true
+		hash[strings.ToLower(e)] = true
 	}
+
 	for _, e := range s2 {
 		// If elements present in the hashmap then append intersection list.
-		if hash[e] {
+		if hash[strings.ToLower(e)] {
 			inter = append(inter, e)
 		}
 	}
+
 	//Remove dups from slice.
 	inter = removeDups(inter)
+
 	return
 }
 
 //Remove dups from slice.
 func removeDups(elements []string) (nodups []string) {
+
 	encountered := make(map[string]bool)
 	for _, element := range elements {
 		if !encountered[element] {
