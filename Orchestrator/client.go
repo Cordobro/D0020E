@@ -25,7 +25,7 @@ func exchangeJson(c *client, struc interface{}) []byte {
 	jsonStr, err := json.Marshal(struc)
 	errorHandler(err)
 	resp, err := http.Post(c.httpAdrs, "application/json", bytes.NewBuffer(jsonStr))
-	errorHandler(err)
+	errorHandler2(err)
 	defer resp.Body.Close()
 
 	jsonBody, err := ioutil.ReadAll(resp.Body)
@@ -40,5 +40,13 @@ func exchangeJson(c *client, struc interface{}) []byte {
 func errorHandler(err error) {
 	if err != nil {
 		panic(err)
+	}
+}
+
+func errorHandler2(err error) {
+	if err != nil {
+		fmt.Println("ERROR")
+		fmt.Println("No ServiceRegistry Found")
+		fmt.Println("")
 	}
 }
