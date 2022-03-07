@@ -15,7 +15,7 @@ The original Arrowhead framework written in Java: https://github.com/eclipse-arr
 
 ## Compile
 
-To compile the orchestrator, simply excecute the main file. Remember to set up the address to the Service Registry in the config file.
+To compile the orchestrator, simply run the command "go build main.go". Remember to set up the address to the Service Registry in the config file.
 
 ## Config
 
