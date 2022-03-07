@@ -11,7 +11,7 @@ type ServiceQueryForm struct {
 	ServiceDefinitionRequirement string   `json:"serviceDefinitionRequirement"`
 	InterfaceRequirements        []string `json:"interfaceRequirements"`
 	SecurityRequirements         []string `json:"securityRequirements"`
-	MetadataRequirements         []string `json:"metadataRequirements"`
+	MetadataRequirements         []string `json:"metadataRequirementsGo"`
 	VersionRequirement           int      `json:"versionRequirement"`
 	MaxVersionRequirement        int      `json:"maxVersionRequirement"`
 	MinVersionRequirement        int      `json:"minVersionRequirement"`
@@ -65,7 +65,7 @@ type ServiceQueryData struct {
 	ServiceURI        string            `json:"serviceUri"`
 	EndOfValidity     string            `json:"endOfValidity"`
 	Secure            string            `json:"secure"`
-	Metadata          []string          `json:"metadata"`
+	Metadata          []string          `json:"metadataGo"`
 	Version           int               `json:"version"`
 	Interfaces        []Interfaces      `json:"interfaces"`
 	CreatedAt         string            `json:"createdAt"`
